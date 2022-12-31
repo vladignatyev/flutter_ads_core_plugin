@@ -1,9 +1,12 @@
 package com.example.flutter_ads_core_plugin;
 
+import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Handler;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,14 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
   private FlutterEngine flutterEngine;
+
+  private Map<String, GoogleMobileAdsPlugin.NativeAdFactory> factories = new HashMap<>();
+
+  private void setFactories(ActivityPluginBinding binding) {
+    // здесь добавлять фабрики
+
+    factories.put("listTile", new ListTileNativeAdFactory(binding.getActivity()));
+  }
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -60,12 +71,19 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
 
-    setTimeout(new Runnable() {
-      @Override
-      public void run() {
-        GoogleMobileAdsPlugin.registerNativeAdFactory(flutterEngine, "listTile", new ListTileNativeAdFactory(binding.getActivity()));
+    try {
+      setFactories(binding);
+      flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        factories.forEach((factoryName, factory) -> {
+          GoogleMobileAdsPlugin.registerNativeAdFactory(flutterEngine, factoryName, factory);
+        });
       }
-    }, 500);
+
+    } catch (Exception e) {
+      Log.e("AdsPlugin", e.getMessage());
+    }
 
   }
 

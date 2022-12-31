@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:skeletons/skeletons.dart';
 
+class NativeAdFabric {
+  static const String listTile = "listTile";
+}
+
 class NativeAdWidget extends StatefulWidget {
   final String adUnitId;
   final VoidCallback? onClick;
@@ -120,8 +124,8 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
             children: [
               const Padding(
                 padding: EdgeInsets.only(top: 10, left: 10),
-                child: SkeletonAvatar(          
-                  style: SkeletonAvatarStyle(              
+                child: SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
                       shape: BoxShape.rectangle, width: 80, height: 80),
                 ),
               ),
@@ -133,7 +137,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
                       spacing: 6,
                       lineStyle: SkeletonLineStyle(
                         randomLength: true,
-                        height: 15,                    
+                        height: 15,
                         minLength: MediaQuery.of(context).size.width * 0.3,
                         maxLength: MediaQuery.of(context).size.width * 0.7,
                       )),
@@ -141,11 +145,12 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
               )
             ],
           ),
-
-          widget.showMedia ? const Padding(
-            padding: EdgeInsets.all(12),
-            child: SkeletonLine(style: SkeletonLineStyle(height: 180)),
-          ) : Container()
+          widget.showMedia
+              ? const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: SkeletonLine(style: SkeletonLineStyle(height: 180)),
+                )
+              : Container()
         ],
       ),
     );
@@ -153,7 +158,6 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    
     if (isLoading) {
       return skeletonWidget(context);
     } else {
