@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:skeletons/skeletons.dart';
 
-class NativeAdFabric {
+class NativeFactoryNames {
   static const String listTile = "listTile";
 }
 
@@ -22,6 +22,9 @@ class NativeAdWidget extends StatefulWidget {
   final Color? backgroundColor;
   final Color? buttonColor;
   final Color? buttonTextColor;
+
+  /// use NativeAdFabricNames class
+  final String nativeFactoryName;
   final bool showMedia;
 
   const NativeAdWidget(
@@ -36,7 +39,8 @@ class NativeAdWidget extends StatefulWidget {
       this.buttonTextColor,
       this.showMedia = false,
       this.heightWithoutMedia = 150,
-      this.heightWithMedia = 350})
+      this.heightWithMedia = 350,
+      required this.nativeFactoryName})
       : super(key: key);
 
   @override
@@ -96,15 +100,14 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
                     clickToExpandRequested: false)),
             adUnitId: widget.adUnitId,
             customOptions: options,
-            factoryId: 'listTile',
+            factoryId: widget.nativeFactoryName,
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
                 print(error);
               },
               onAdLoaded: (ad) {
                 adWithView = ad as NativeAd?;
-                print("HUJ");
-
+                
                 isLoading = false;
 
                 setState(() {});
