@@ -33,6 +33,56 @@ class AdmobHelper {
         orientation: orientation);
   }
 
+  static void _showConsentForm() {
+    ConsentForm.loadConsentForm(
+      (ConsentForm consentForm) async {
+        // Present the form
+        consentForm.show((formError) {
+          print(formError?.message);
+        });
+      },
+      (FormError formError) {
+        print(formError.message);
+      },
+    );
+  }
+
+  /// Ставить в точку входа main() приложения
+  /// перед этим обязательно указать WidgetsFlutterBinding.ensureInitialized()
+  /// перед runApp
+  static Future<void> init() async {
+    await MobileAds.instance.initialize();    
+  }
+
+  /// Запрос разрешения на сбор личных данных для рекламы (только Евросоюз)
+  /// forcedMode - значит что запрашивать каждый раз
+  /// debugMode - режим тестирования, при этом принудительно присваивается регион ЕС
+  static void requestConsentInfo(
+      {bool debugMode = false, bool forcedMode = false}) {
+    ConsentDebugSettings debugSettings =
+        ConsentDebugSettings(debugGeography: DebugGeography.debugGeographyEea);
+
+    final paramsForDebugMode =
+        ConsentRequestParameters(consentDebugSettings: debugSettings);
+
+    final paramsForStandartMode = ConsentRequestParameters();
+
+    ConsentInformation.instance.requestConsentInfoUpdate(
+        debugMode ? paramsForDebugMode : paramsForStandartMode, () async {
+      
+      if (!forcedMode) {
+        if (await ConsentInformation.instance.getConsentStatus() ==
+            ConsentStatus.obtained) return;
+      }
+
+      if (await ConsentInformation.instance.isConsentFormAvailable()) {
+        _showConsentForm();
+      }
+    }, (error) {
+      print(error.message);
+    });
+  }
+
   static void showInterstitialAd(
       {required String adUnit,
       VoidCallback? onLoaded,
@@ -112,10 +162,10 @@ class AdmobHelper {
           });
         }, onAdFailedToLoad: (error) {
           if (onFailedToLoad != null) {
-              onFailedToLoad(error.message);
-            } else {
-              print('Reward ad failed to load: ${error.message}');
-            }
+            onFailedToLoad(error.message);
+          } else {
+            print('Reward ad failed to load: ${error.message}');
+          }
         }));
   }
 }
