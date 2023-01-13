@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_ads_core_plugin/helpers/ad_controller.dart';
+import 'package:flutter_ads_core_plugin/helpers/native_ad_container.dart';
+import 'package:flutter_ads_core_plugin/helpers/native_ad_widget_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 typedef AdLoadErrorCallback = void Function(String errorMessage);
@@ -115,7 +118,7 @@ class AdmobHelper {
     return completer.future;
   }
 
-  static void showAdOpen(
+  static Future<void> showAdOpen(
       {required String adUnit,
       VoidCallback? onLoaded,
       int orientation = 0,
@@ -123,7 +126,17 @@ class AdmobHelper {
 
       /// Если указан контроллер, то показ рекламы запускается через него
       AdController? controller,
-      AdLoadErrorCallback? onFailedToLoad}) {
+      AdLoadErrorCallback? onFailedToLoad}) async {
+    var completer = Completer();
+
+    var timeOutTimer = Timer(Duration(milliseconds: timeoutMillis), () {
+      if (controller != null) {
+        controller.setError("Timeout");
+      }
+
+      completer.complete();
+    });
+
     AppOpenAd.load(
         adUnitId: adUnit,
         request: AdRequest(httpTimeoutMillis: timeoutMillis),
@@ -138,6 +151,9 @@ class AdmobHelper {
             }
 
             if (onLoaded != null) onLoaded();
+
+            completer.complete();
+            timeOutTimer.cancel();
           },
           onAdFailedToLoad: (error) {
             if (controller != null) {
@@ -149,9 +165,66 @@ class AdmobHelper {
             } else {
               print('Ad open ad failed to load: ${error.message}');
             }
+
+            completer.complete();
+            timeOutTimer.cancel();
           },
         ),
         orientation: orientation);
+
+    return completer.future;
+  }
+
+  static Future<dynamic> getNativeAd(
+      {required String adUnitId,
+      required NativeAdWidgetOptions nativeAdWidgetOptions,
+      bool showMedia = false,
+      int timeout = 5000,
+      required String nativeFactoryName}) {
+    var completer = Completer();
+
+    Map<String, Object> options = nativeAdWidgetOptions.convertToMap();
+
+    double blockHeight = 0;
+
+    if (showMedia) {
+      options['showMedia'] = 'true';
+      blockHeight = nativeAdWidgetOptions.heightWithMedia;
+    } else {
+      blockHeight = nativeAdWidgetOptions.heightWithoutMedia;
+    }
+
+    var timeoutTimer = Timer(Duration(milliseconds: timeout), () {
+      completer.complete(NativeAdContainer(null));
+    });
+
+    NativeAd(
+            nativeAdOptions: NativeAdOptions(
+                videoOptions: VideoOptions(
+                    startMuted: true,
+                    customControlsRequested: false,
+                    clickToExpandRequested: false)),
+            adUnitId: adUnitId,
+            customOptions: options,
+            factoryId: nativeFactoryName,
+            listener: NativeAdListener(
+              onAdFailedToLoad: (ad, error) {
+                print(error);
+                completer.complete(NativeAdContainer(null));
+                timeoutTimer.cancel();
+              },
+              onAdLoaded: (ad) {
+                completer.complete(NativeAdContainer(SizedBox(
+                    height: blockHeight,
+                    child: AdWidget(ad: ad as AdWithView))));
+                
+                timeoutTimer.cancel();
+              },
+            ),
+            request: const AdRequest())
+        .load();
+
+    return completer.future;
   }
 
   static void showInterstitialAd(
