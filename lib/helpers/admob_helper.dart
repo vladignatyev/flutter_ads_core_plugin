@@ -26,7 +26,7 @@ class AdmobHelper {
   /// Запрос разрешения на сбор личных данных для рекламы (только Евросоюз)
   /// forcedMode - значит что запрашивать каждый раз
   /// debugMode - режим тестирования, при этом принудительно присваивается регион ЕС
-  static Future<void> requestConsentInfo(
+  static void requestConsentInfo(
       {bool debugMode = false,
       bool forcedMode = false,
       Function? onCompleteCallback,
@@ -42,15 +42,13 @@ class AdmobHelper {
 
     final paramsForStandartMode = ConsentRequestParameters();
 
-    Completer completer = Completer();
-
     ConsentInformation.instance.requestConsentInfoUpdate(
         debugMode ? paramsForDebugMode : paramsForStandartMode, () async {
       ConsentInformation.instance
           .isConsentFormAvailable()
           .then((isAvailable) async {
         if (!isAvailable) {
-          completer.complete();
+          if (onCompleteCallback != null) onCompleteCallback();
           return;
         }
 
@@ -60,7 +58,8 @@ class AdmobHelper {
           // проверка на то что разрешение уже получено
           if (await ConsentInformation.instance.getConsentStatus() ==
               ConsentStatus.obtained) {
-            completer.complete();
+            if (onCompleteCallback != null) onCompleteCallback();
+            return;
           }
         }
 
@@ -73,11 +72,7 @@ class AdmobHelper {
     }, (error) {
       print("ERROR");
       print(error.message);
-
-      completer.complete();
     });
-
-    return completer.future;
   }
 
   static void _waitConsentFormComplete(Function callback) async {
@@ -217,7 +212,7 @@ class AdmobHelper {
                 completer.complete(NativeAdContainer(SizedBox(
                     height: blockHeight,
                     child: AdWidget(ad: ad as AdWithView))));
-                
+
                 timeoutTimer.cancel();
               },
             ),
