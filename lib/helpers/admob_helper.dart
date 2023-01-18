@@ -31,7 +31,8 @@ class AdmobHelper {
       bool forcedMode = false,
       Function? onCompleteCallback,
       List<String>? testIdentifiers}) async {
-    ConsentInformation.instance.reset();
+    
+    if (forcedMode) ConsentInformation.instance.reset();
 
     ConsentDebugSettings debugSettings = ConsentDebugSettings(
         debugGeography: DebugGeography.debugGeographyEea,
@@ -42,11 +43,16 @@ class AdmobHelper {
 
     final paramsForStandartMode = ConsentRequestParameters();
 
+    
+
     ConsentInformation.instance.requestConsentInfoUpdate(
         debugMode ? paramsForDebugMode : paramsForStandartMode, () async {
+
+
       ConsentInformation.instance
           .isConsentFormAvailable()
           .then((isAvailable) async {
+
         if (!isAvailable) {
           if (onCompleteCallback != null) onCompleteCallback();
           return;
@@ -64,8 +70,9 @@ class AdmobHelper {
         }
 
         if (onCompleteCallback != null) {
-          _waitConsentFormComplete(onCompleteCallback);
+          _pollingConsentFormComplete(onCompleteCallback);
         }
+
       }).onError((error, stackTrace) {
         print(error);
       }).timeout(const Duration(seconds: 3));
@@ -75,7 +82,7 @@ class AdmobHelper {
     });
   }
 
-  static void _waitConsentFormComplete(Function callback) async {
+  static void _pollingConsentFormComplete(Function callback) async {
     if (_waitStopperFlag == true) {
       _waitStopperFlag = false;
       return;
@@ -88,7 +95,7 @@ class AdmobHelper {
       callback();
     } else {
       await Future.delayed(const Duration(milliseconds: 500));
-      _waitConsentFormComplete(callback);
+      _pollingConsentFormComplete(callback);
     }
   }
 
