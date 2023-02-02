@@ -2,13 +2,7 @@ package me.taplika.flutter_ads_core_plugin;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Handler;
 
 import androidx.annotation.NonNull;
 
@@ -22,31 +16,68 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin;
 
-import me.taplika.flutter_ads_core_plugin.adfactory.ListMediaButtonNativeAd;
 
 /** FlutterAdsCorePlugin */
 public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private MethodChannel channel;
+
+  private static final String TAG = "FlutterAdsCorePlugin";
+
   private FlutterEngine flutterEngine;
+  public void bindAdFactories(ActivityPluginBinding binding) {
+    Log.d(TAG, "bindAdFactories");
 
-  private Map<String, GoogleMobileAdsPlugin.NativeAdFactory> factories = new HashMap<>();
+    Context context = (Context) binding.getActivity();
 
-  private void initAdFactories(ActivityPluginBinding binding) {
-    // здесь добавлять фабрики
-
-    factories.put("listTile", new ListMediaButtonNativeAd((Context) binding.getActivity()));
+    LayoutPresets.factories.forEach((factoryName, factory) -> {
+      factory.setContext(context);
+    });
   }
+  public void unbindAdFactories() {
+    Log.d(TAG, "unbindAdFactories");
+
+    LayoutPresets.factories.forEach((factoryName, factory) -> {
+      factory.setContext(null);
+    });
+  }
+
+
+  private void registerAdFactories() {
+    Log.d(TAG, "registerAdFactories");
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // TODO: ???
+
+      LayoutPresets.factories.forEach((factoryName, factory) -> {
+        GoogleMobileAdsPlugin.registerNativeAdFactory(flutterEngine, factoryName, factory);
+      });
+    }
+  }
+  private void unregisterAdFactories() {
+    Log.d(TAG, "unregisterAdFactories");
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) { // TODO: ???
+
+      LayoutPresets.factories.forEach((factoryName, factory) -> {
+        GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, factoryName);
+      });
+    }
+  }
+
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    Log.d("Plugin", "onAttachedToEngine");
+    Log.d(TAG, "onAttachedToEngine");
 
     flutterEngine = flutterPluginBinding.getFlutterEngine();
+    flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
+  }
 
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    Log.d(TAG, "onDetachedFromEngine");
+
+    unbindAdFactories();
+    unregisterAdFactories();
+    flutterEngine = null;
   }
 
   @Override
@@ -54,54 +85,33 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
 
   }
 
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-
-  }
-
-  public void setTimeout(Runnable runnable, int delay){
-    new Thread(() -> {
-      try {
-        Thread.sleep(delay);
-        runnable.run();
-      }
-      catch (Exception e){
-        System.err.println(e);
-      }
-    }).start();
-  }
 
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+    Log.d(TAG, "onAttachedToActivity");
 
-    try {
-      initAdFactories(binding);
-      flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
-
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        factories.forEach((factoryName, factory) -> {
-          GoogleMobileAdsPlugin.registerNativeAdFactory(flutterEngine, factoryName, factory);
-        });
-      }
-
-    } catch (Exception e) {
-      Log.e("AdsPlugin", e.getMessage());
-    }
-
+    bindAdFactories(binding);
+    registerAdFactories();
   }
 
   @Override
   public void onDetachedFromActivityForConfigChanges() {
+    Log.d(TAG, "onDetachedFromActivityForConfigChanges");
 
+    unbindAdFactories();
   }
 
   @Override
   public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+    Log.d(TAG, "onReattachedToActivityForConfigChanges");
 
+    bindAdFactories(binding);
   }
 
   @Override
   public void onDetachedFromActivity() {
+    Log.d(TAG, "onDetachedFromActivity");
 
+    unbindAdFactories();
   }
 }
