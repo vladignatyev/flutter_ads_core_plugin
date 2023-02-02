@@ -1,5 +1,6 @@
 package me.taplika.flutter_ads_core_plugin;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
@@ -21,6 +22,8 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin;
 
+import me.taplika.flutter_ads_core_plugin.adfactory.ListMediaButtonNativeAd;
+
 /** FlutterAdsCorePlugin */
 public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
   /// The MethodChannel that will the communication between Flutter and native Android
@@ -32,10 +35,10 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
 
   private Map<String, GoogleMobileAdsPlugin.NativeAdFactory> factories = new HashMap<>();
 
-  private void setFactories(ActivityPluginBinding binding) {
+  private void initAdFactories(ActivityPluginBinding binding) {
     // здесь добавлять фабрики
 
-    factories.put("listTile", new ListTileNativeAdFactory(binding.getActivity()));
+    factories.put("listTile", new ListMediaButtonNativeAd((Context) binding.getActivity()));
   }
 
   @Override
@@ -72,7 +75,7 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
 
     try {
-      setFactories(binding);
+      initAdFactories(binding);
       flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

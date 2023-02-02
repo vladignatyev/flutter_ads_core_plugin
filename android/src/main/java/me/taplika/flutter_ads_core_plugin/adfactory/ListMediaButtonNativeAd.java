@@ -1,10 +1,12 @@
-package me.taplika.flutter_ads_core_plugin;
+package me.taplika.flutter_ads_core_plugin.adfactory;
 
-import com.google.android.gms.ads.nativead.MediaView;
-import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.ads.nativead.NativeAdView;
+import me.taplika.flutter_ads_core_plugin.adfactory.base.NativeAdContent;
+import me.taplika.flutter_ads_core_plugin.adfactory.base.NativeAdFactory;
+import me.taplika.flutter_ads_core_plugin.R;
 
-import android.content.Context;
+
+import java.util.Map;
+import java.util.Objects;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,37 +14,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.Map;
-import java.util.Objects;
+import com.google.android.gms.ads.nativead.MediaView;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdView;
 
-import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin;
 
-class ListTileNativeAdFactory implements GoogleMobileAdsPlugin.NativeAdFactory {
+import android.content.Context;
 
-    private final Context context;
+public class ListMediaButtonNativeAd extends NativeAdFactory {
+    public ListMediaButtonNativeAd(Context context) { super(context); }
 
-    private String TAG = "NativeAdFactory";
-
-    ListTileNativeAdFactory(Context context) {
-        this.context = context;
+    @Override
+    protected NativeAdView inflate(Context context, Map<String, Object> customOptions, NativeAdContent adContent) {
+        return (NativeAdView) LayoutInflater.from(context).inflate(R.layout.list_tile_native_ad, null);
     }
 
     @Override
-    public NativeAdView createNativeAd(
-            NativeAd nativeAd, Map<String, Object> customOptions) {
-
-        NativeAdView nativeAdView = (NativeAdView) LayoutInflater.from(context)
-                .inflate(R.layout.list_tile_native_ad, null);
-
-        String store = nativeAd.getStore();
-        String advertiser = nativeAd.getAdvertiser();
-        String headline = nativeAd.getHeadline();
-        String body = nativeAd.getBody();
-        String cta = nativeAd.getCallToAction();
-        String price = nativeAd.getPrice();
-        Double starRating = nativeAd.getStarRating();
-        NativeAd.Image icon = nativeAd.getIcon();
-
+    protected void bindView(NativeAdView nativeAdView, Map<String, Object> customOptions, NativeAdContent adContent) {
+        /* 2. Obtaining views for showing ads content. */
         TextView storeView = nativeAdView.findViewById(R.id.store);
         TextView advertiserView = nativeAdView.findViewById(R.id.advertiser);
         TextView headlineView = nativeAdView.findViewById(R.id.headline);
@@ -54,69 +43,73 @@ class ListTileNativeAdFactory implements GoogleMobileAdsPlugin.NativeAdFactory {
         ImageView iconView = nativeAdView.findViewById(R.id.ad_icon);
         MediaView mediaView = nativeAdView.findViewById(R.id.ad_media);
 
-        if (icon != null) {
-            iconView.setImageDrawable(icon.getDrawable());
-            nativeAdView.setIconView(iconView);
+        /* 3. Provide views to ads SDK. */
+        nativeAdView.setHeadlineView(headlineView);
+        nativeAdView.setBodyView(bodyView);
+        nativeAdView.setCallToActionView(ctaView);
+        nativeAdView.setIconView(iconView);
+        nativeAdView.setPriceView(priceView);
+        nativeAdView.setStarRatingView(starRatingView);
+        nativeAdView.setStoreView(storeView);
+        nativeAdView.setAdvertiserView(advertiserView);
+        nativeAdView.setMediaView(mediaView);
+
+        /* 4. Fulfilling views with content of ads. */
+
+        /* The headline and media content must present in ads content. */
+
+        /* MUST FIELDS */
+        headlineView.setText(adContent.headline);
+
+        // Visibility, either GONE or INVISIBLE may affect revenues and concern an invalid traffic.
+        if (adContent.icon != null) {
+            iconView.setImageDrawable(adContent.icon.getDrawable());
         } else {
             iconView.setVisibility(View.GONE);
         }
 
-        if (headline != null) {
-            headlineView.setText(headline);
-            nativeAdView.setHeadlineView(headlineView);
-        } else {
-            headlineView.setVisibility(View.GONE);
-        }
-
-
-        if (body != null) {
-            bodyView.setText(body);
-            nativeAdView.setBodyView(bodyView);
+        if (adContent.body != null) {
+            bodyView.setText(adContent.body);
         } else {
             bodyView.setVisibility(View.INVISIBLE);
         }
 
-
-        if (price != null) {
-            priceView.setText(price);
-            nativeAdView.setPriceView(priceView);
-        } else {
-            priceView.setVisibility(View.GONE);
+        if (adContent.mediaContent != null) {
+            mediaView.setMediaContent(adContent.mediaContent);
         }
 
-        if (store != null) {
-            storeView.setText(store);
-            nativeAdView.setStoreView(storeView);
+        /* OPTIONAL FIELDS */
+        if (adContent.price != null) {
+            priceView.setText(adContent.price);
+        } else {
+            priceView.setVisibility(View.INVISIBLE);
+        }
+
+        if (adContent.store != null) {
+            storeView.setText(adContent.store);
         } else {
             storeView.setVisibility(View.GONE);
         }
 
-        if (advertiser != null) {
-            advertiserView.setText(advertiser);
-            nativeAdView.setAdvertiserView(advertiserView);
+        if (adContent.advertiser != null) {
+            advertiserView.setText(adContent.advertiser);
         } else {
-            advertiserView.setVisibility(View.GONE);
+            advertiserView.setVisibility(View.INVISIBLE);
         }
 
-        if (starRating != null) {
-            starRatingView.setText(starRating.toString());
-            nativeAdView.setStarRatingView(starRatingView);
+        if (adContent.starRating != null) {
+            starRatingView.setText(adContent.starRating.toString());
         } else {
-            starRatingLayoutview.setVisibility(View.GONE);
+            starRatingLayoutview.setVisibility(View.INVISIBLE);
         }
 
-        if (cta != null) {
-            ctaView.setText(cta);
-            nativeAdView.setCallToActionView(ctaView);
+        if (adContent.cta != null) {
+            ctaView.setText(adContent.cta);
         } else {
-            ctaView.setVisibility(View.GONE);
+            ctaView.setVisibility(View.INVISIBLE);
         }
 
         if (customOptions != null) {
-            if (customOptions.containsKey("showMedia")) {
-                nativeAdView.setMediaView(mediaView);
-            }
-
             if (customOptions.containsKey("headlineColor")) {
                 String colorValue = Objects.requireNonNull(customOptions.get("headlineColor")).toString();
                 if (!colorValue.isEmpty()) headlineView.setTextColor(Color.parseColor(colorValue));
@@ -149,9 +142,5 @@ class ListTileNativeAdFactory implements GoogleMobileAdsPlugin.NativeAdFactory {
                 if (!colorValue.isEmpty()) ctaView.setTextColor(Color.parseColor(colorValue));
             }
         }
-
-        nativeAdView.setNativeAd(nativeAd);
-
-        return nativeAdView;
     }
 }
