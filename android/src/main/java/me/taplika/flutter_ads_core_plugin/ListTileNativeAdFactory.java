@@ -1,4 +1,4 @@
-package com.example.flutter_ads_core_plugin;
+package me.taplika.flutter_ads_core_plugin;
 
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;

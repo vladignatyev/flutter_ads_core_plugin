@@ -1,4 +1,4 @@
-package com.example.flutter_ads_core_plugin_example;
+package me.taplika.flutter_ads_core_plugin_example;
 
 import io.flutter.embedding.android.FlutterActivity;
 

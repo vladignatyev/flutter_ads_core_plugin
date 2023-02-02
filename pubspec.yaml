@@ -27,7 +27,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.flutter_ads_core_plugin
+        package: me.taplika.flutter_ads_core_plugin
         pluginClass: FlutterAdsCorePlugin
 
   # To add assets to your plugin package, add an assets section, like this:

@@ -1,4 +1,4 @@
-package com.example.flutter_ads_core_plugin;
+package me.taplika.flutter_ads_core_plugin;
 
 import android.os.Build;
 import android.os.Looper;
