@@ -1,15 +1,6 @@
 # flutter_ads_core_plugin
 
-A new Flutter plugin project.
+Flutter plugin that simplifies usage of AdMob native ads. 
+It provides various layouts and base classes for further customization.
 
-## Getting Started
-
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+Taplika DOO (c) 2022-2023
