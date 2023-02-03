@@ -52,6 +52,7 @@
                     tools:text="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet " />
 
                 <RatingBar
+                    android:id="@+id/ad_rating_bar"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +79,6 @@
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dolor sit amet." />
 
             </LinearLayout>
-
 
             <Button
                 android:id="@+id/cta_button"

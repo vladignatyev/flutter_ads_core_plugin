@@ -50,11 +50,22 @@
                     android:orientation="horizontal">
 
                     <RatingBar
+                        android:id="@+id/ad_rating_bar"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="16sp"
                         android:numStars="5"
                         android:paddingTop="4dp" />
+
+                    <TextView
+                        android:id="@+id/ad_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="1dp"
+                        android:textColor="#FF333333"
+                        android:textSize="13sp"
+                        tools:text="FREE" />
 
                     <TextView
                         android:id="@+id/store"
