@@ -70,7 +70,7 @@
                         android:paddingVertical="2dp"
                         android:textAlignment="center"
                         android:paddingHorizontal="4dp"
-                        android:background="#E47D0A"
+                        android:background="#C60C74"
                         android:text="Ad"
                         android:textColor="#FFFFFF"
                         android:textSize="11sp" />
@@ -97,14 +97,14 @@
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="34dp"
+                    android:layout_height="48dp"
                     android:paddingHorizontal="24dp"
                     android:backgroundTint="#C5006E"
                     android:gravity="fill_vertical"
                     android:includeFontPadding="false"
                     android:textColor="#FFFEFEFE"
                     android:id="@+id/cta_button"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:layout_marginStart="-4dp"
                     tools:text="Install"
                     />
@@ -113,7 +113,9 @@
 
             <ImageView
                 android:id="@+id/ad_icon"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 tools:src="@drawable/ic_baseline_star_24"
