@@ -20,7 +20,6 @@
             <ImageView
                 android:id="@+id/ad_icon"
                 android:layout_marginTop="4dp"
-                android:layout_marginStart="4dp"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 tools:src="@drawable/ic_baseline_star_24"
