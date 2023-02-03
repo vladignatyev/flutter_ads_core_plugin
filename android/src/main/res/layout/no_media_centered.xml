@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:paddingHorizontal="16dp">
 
-
         <ImageView
             android:id="@+id/ad_icon"
             android:layout_width="64dp"
@@ -19,9 +18,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            tools:src="@drawable/ic_baseline_star_24"
             android:contentDescription="@string/icon_content_description_text"
-            />
+            tools:src="@drawable/ic_baseline_star_24" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +40,6 @@
                 android:textStyle="bold"
                 tools:text="Lorem ipsum dolor sit amet. " />
 
-
             <RatingBar
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
@@ -54,7 +51,6 @@
                 android:numStars="5" />
 
         </LinearLayout>
-
 
         <Button
             android:id="@+id/cta_button"
