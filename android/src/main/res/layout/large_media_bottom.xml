@@ -22,6 +22,7 @@
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 tools:src="@drawable/ic_baseline_star_24"
+                android:contentDescription="@string/icon_content_description_text"
                 />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,9 +54,9 @@
                         android:paddingVertical="2dp"
                         android:textAlignment="center"
                         android:paddingHorizontal="4dp"
-                        android:background="#E47D0A"
+                        android:background="#B36105"
                         android:layout_gravity="center"
-                        android:text="Ad"
+                        android:text="@string/ad_attribution_text"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp" />
 
@@ -102,6 +103,7 @@
                     android:id="@+id/body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="320dp"
                     android:ellipsize="end"
                     android:layout_marginBottom="4dp"
                     android:maxLines="4"
@@ -125,8 +127,9 @@
             android:layout_marginBottom="8dp"
             />
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="54dp"
+            android:paddingHorizontal="64dp"
             android:textAlignment="gravity"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -137,7 +140,7 @@
             android:textSize="18sp"
             tools:text="Install"
             android:layout_marginBottom="8dp"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom|center_horizontal" />
     </LinearLayout>
 
 </com.google.android.gms.ads.nativead.NativeAdView>

@@ -24,6 +24,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 tools:src="@drawable/ic_baseline_star_24"
+                android:contentDescription="@string/icon_content_description_text"
                 />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,7 +54,6 @@
                     <RatingBar
                         android:layout_width="wrap_content"
                         android:layout_height="16sp"
-                        android:layout_marginStart="4dp"
                         android:paddingTop="4dp"
                         android:numStars="5"
                         style="?android:attr/ratingBarStyleSmall"
@@ -78,9 +78,10 @@
                         android:textAlignment="center"
                         android:paddingHorizontal="4dp"
                         android:background="#C60C74"
-                        android:text="Ad"
+                        android:text="@string/ad_attribution_text"
                         android:textColor="#FFFFFF"
-                        android:textSize="11sp" />
+                        android:textSize="11sp"
+                        tools:ignore="VisualLintBounds" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -114,7 +115,7 @@
                     android:textSize="14sp"
                     android:layout_marginStart="-4dp"
                     tools:text="Install"
-                    />
+                    tools:ignore="VisualLintBounds" />
 
             </LinearLayout>
         </LinearLayout>
