@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFCFCFC"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            >
+            <ImageView
+                android:id="@+id/ad_icon"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                tools:src="@drawable/ic_baseline_star_24"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/headline"
+                    android:textColor="#FF333333"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:textAlignment="center"
+                    android:layout_gravity="center_horizontal"
+                    android:maxLines="2"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    tools:text="Lorem ipsum dolor sit amet. "
+                    />
+
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_gravity="center_horizontal"
+                        android:numStars="5"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        />
+
+            </LinearLayout>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:paddingHorizontal="32dp"
+                android:backgroundTint="#006EC5"
+                android:textColor="#FFFEFEFE"
+                android:gravity="center_horizontal|center_vertical"
+                android:id="@+id/cta_button"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Install"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ad_attribution_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="2dp"
+        android:textAlignment="center"
+        android:paddingHorizontal="4dp"
+        android:background="#777777"
+        android:layout_gravity="top|left"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Ad"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+</com.google.android.gms.ads.nativead.NativeAdView>

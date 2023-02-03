@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFCFCFC"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+            <ImageView
+                android:id="@+id/ad_icon"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                tools:src="@drawable/ic_baseline_star_24"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/headline"
+                    android:textColor="#FF333333"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    tools:text="1234567890123456789012345"
+                    android:layout_marginBottom="4dp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="16sp"
+                        android:layout_marginStart="4dp"
+                        android:paddingTop="4dp"
+                        android:numStars="5"
+                        style="?android:attr/ratingBarStyleSmall"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="4dp"
+                        android:id="@+id/store"
+                        android:textColor="#FF333333"
+                        android:textSize="13sp"
+                        tools:text="Google Play"
+                        />
+                    <TextView
+                        android:id="@+id/ad_attribution_small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:paddingVertical="2dp"
+                        android:textAlignment="center"
+                        android:paddingHorizontal="4dp"
+                        android:background="#E47D0A"
+                        android:text="Ad"
+                        android:textColor="#FFFFFF"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+
+                        android:ellipsize="end"
+                        android:layout_marginTop="1dp"
+                        android:textColor="#006EC5"
+                        android:autoLink="none"
+                        android:linksClickable="false"
+                        android:id="@+id/advertiser"
+                        android:textSize="13sp"
+                        android:maxLines="1"
+                        tools:text="https://some-uri.com/test/test"
+                        />
+
+
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:paddingHorizontal="24dp"
+                    android:backgroundTint="#C5006E"
+                    android:gravity="fill_vertical"
+                    android:includeFontPadding="false"
+                    android:textColor="#FFFEFEFE"
+                    android:id="@+id/cta_button"
+                    android:textSize="14sp"
+                    android:layout_marginStart="-4dp"
+                    tools:text="Install"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</com.google.android.gms.ads.nativead.NativeAdView>
