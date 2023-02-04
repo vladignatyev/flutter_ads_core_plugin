@@ -22,7 +22,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -30,6 +30,13 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 24
+    }
+
+    dependencies {
+        // TODO: Find a better solution for development setup.
+
+        // NOTE: Uncomment the line to enable XML layouts for Android Studio
+//        implementation "com.google.android.gms:play-services-ads:21.5.0"
     }
 }

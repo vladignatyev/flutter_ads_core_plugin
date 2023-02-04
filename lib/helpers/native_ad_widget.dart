@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ads_core_plugin/helpers/native_ad_widget_options.dart';
+import 'package:flutter_ads_core_plugin/shared/custom_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:skeletons/skeletons.dart';
 
-class NativeFactoryNames {
-  static const String listTile = "listTile";
-}
 
 class NativeAdWidget extends StatefulWidget {
   final String adUnitId;
   final VoidCallback? onClick;
   final VoidCallback? onShow;
 
-  final NativeAdWidgetOptions nativeAdWidgetOptions;
+  final CustomOptions nativeAdWidgetOptions;
 
   /// use NativeAdFabricNames class
   final String nativeFactoryName;
@@ -35,7 +32,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
   bool isLoading = true;
   AdWithView? adWithView;
 
-  double blockHeight = 150;
+  double blockHeight = 150; // TODO:
 
   @override
   void initState() {
@@ -45,12 +42,12 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
 
     Map<String, Object> options = widget.nativeAdWidgetOptions.convertToMap();
 
-    if (widget.nativeAdWidgetOptions.showMedia == true) {
-      options['showMedia'] = 'true';
-      blockHeight = widget.nativeAdWidgetOptions.heightWithMedia;
-    } else {
-      blockHeight = widget.nativeAdWidgetOptions.heightWithoutMedia;
-    }
+    // if (widget.nativeAdWidgetOptions.showMedia == true) {
+    //   options['showMedia'] = 'true';
+    //   blockHeight = widget.nativeAdWidgetOptions.heightWithMedia;
+    // } else {
+    //   blockHeight = widget.nativeAdWidgetOptions.heightWithoutMedia;
+    // }
 
     NativeAd(
             nativeAdOptions: NativeAdOptions(
@@ -108,12 +105,13 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
               )
             ],
           ),
-          widget.nativeAdWidgetOptions.showMedia
-              ? const Padding(
-                  padding: EdgeInsets.all(12),
-                  child: SkeletonLine(style: SkeletonLineStyle(height: 180)),
-                )
-              : Container()
+          // widget.nativeAdWidgetOptions.showMedia
+          //     ? const Padding(
+          //         padding: EdgeInsets.all(12),
+          //         child: SkeletonLine(style: SkeletonLineStyle(height: 180)),
+          //       )
+          //     :
+          Container()
         ],
       ),
     );
