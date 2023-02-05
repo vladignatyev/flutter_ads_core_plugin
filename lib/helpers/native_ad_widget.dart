@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ads_core_plugin/flutter_ads_core_plugin.dart';
 import 'package:flutter_ads_core_plugin/shared/custom_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:skeletons/skeletons.dart';
-
 
 class NativeAdWidget extends StatefulWidget {
   final String adUnitId;
@@ -11,16 +11,16 @@ class NativeAdWidget extends StatefulWidget {
 
   final CustomOptions nativeAdWidgetOptions;
 
-  /// use NativeAdFabricNames class
-  final String nativeFactoryName;
+  /// Use NativeAdFactories class
+  final NativeAdFactory nativeAdFactory;
 
   const NativeAdWidget(
       {Key? key,
       required this.adUnitId,
       this.onClick,
       this.onShow,
-      required this.nativeAdWidgetOptions,      
-      required this.nativeFactoryName})
+      required this.nativeAdWidgetOptions,
+      required this.nativeAdFactory})
       : super(key: key);
 
   @override
@@ -30,9 +30,7 @@ class NativeAdWidget extends StatefulWidget {
 class _NativeAdWidgetState extends State<NativeAdWidget> {
   NativeAd? nativeAd;
   bool isLoading = true;
-  AdWithView? adWithView;
-
-  double blockHeight = 150; // TODO:
+  AdWithView? adWithView;  
 
   @override
   void initState() {
@@ -42,13 +40,6 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
 
     Map<String, Object> options = widget.nativeAdWidgetOptions.convertToMap();
 
-    // if (widget.nativeAdWidgetOptions.showMedia == true) {
-    //   options['showMedia'] = 'true';
-    //   blockHeight = widget.nativeAdWidgetOptions.heightWithMedia;
-    // } else {
-    //   blockHeight = widget.nativeAdWidgetOptions.heightWithoutMedia;
-    // }
-
     NativeAd(
             nativeAdOptions: NativeAdOptions(
                 videoOptions: VideoOptions(
@@ -57,7 +48,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
                     clickToExpandRequested: false)),
             adUnitId: widget.adUnitId,
             customOptions: options,
-            factoryId: widget.nativeFactoryName,
+            factoryId: widget.nativeAdFactory.factoryName,
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
                 print(error);
@@ -76,7 +67,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
 
   Widget skeletonWidget(BuildContext context) {
     return SizedBox(
-      height: blockHeight,
+      height: widget.nativeAdFactory.viewOptions.height,
       child: Column(
         children: [
           Row(
@@ -104,14 +95,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
                 ),
               )
             ],
-          ),
-          // widget.nativeAdWidgetOptions.showMedia
-          //     ? const Padding(
-          //         padding: EdgeInsets.all(12),
-          //         child: SkeletonLine(style: SkeletonLineStyle(height: 180)),
-          //       )
-          //     :
-          Container()
+          )
         ],
       ),
     );
@@ -122,7 +106,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
     if (isLoading) {
       return skeletonWidget(context);
     } else {
-      return SizedBox(height: blockHeight, child: AdWidget(ad: adWithView!));
+      return SizedBox(height: widget.nativeAdFactory.viewOptions.height, child: AdWidget(ad: adWithView!));
     }
   }
 }
