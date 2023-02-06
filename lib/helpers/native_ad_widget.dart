@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ads_core_plugin/flutter_ads_core_plugin.dart';
 import 'package:flutter_ads_core_plugin/shared/custom_options.dart';
+import 'package:flutter_ads_core_plugin/shared/view_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -12,7 +13,7 @@ class NativeAdWidget extends StatefulWidget {
   final CustomOptions nativeAdWidgetOptions;
 
   /// Use NativeAdFactories class
-  final NativeAdFactory nativeAdFactory;
+  final String nativeAdFactory;
 
   const NativeAdWidget(
       {Key? key,
@@ -48,7 +49,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
                     clickToExpandRequested: false)),
             adUnitId: widget.adUnitId,
             customOptions: options,
-            factoryId: widget.nativeAdFactory.factoryName,
+            factoryId: widget.nativeAdFactory,
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
                 print(error);
@@ -67,7 +68,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
 
   Widget skeletonWidget(BuildContext context) {
     return SizedBox(
-      height: widget.nativeAdFactory.viewOptions.height,
+      height: ViewOptions.getOptions(widget.nativeAdFactory).height,
       child: Column(
         children: [
           Row(
@@ -106,7 +107,7 @@ class _NativeAdWidgetState extends State<NativeAdWidget> {
     if (isLoading) {
       return skeletonWidget(context);
     } else {
-      return SizedBox(height: widget.nativeAdFactory.viewOptions.height, child: AdWidget(ad: adWithView!));
+      return SizedBox(height: ViewOptions.getOptions(widget.nativeAdFactory).height, child: AdWidget(ad: adWithView!));
     }
   }
 }
