@@ -24,6 +24,9 @@ public class CustomOptions {
     @Nullable
     Integer secondaryTextColor; // for advertiser, store and price
 
+    @Nullable
+    Integer backgroundColor;
+
     public static CustomOptions fromHashMap(@Nullable Map<String, Object> map) {
         CustomOptions result = new CustomOptions();
         if (map == null)
@@ -34,6 +37,7 @@ public class CustomOptions {
         result.ctaTextColor = parseColor(map.get("ctaTextColor"));
         result.ctaBackgroundColor = parseColor(map.get("ctaBackgroundColor"));
         result.secondaryTextColor = parseColor(map.get("secondaryTextColor"));
+        result.backgroundColor = parseColor(map.get("backgroundColor"));
 
         return result;
     }
@@ -47,14 +51,21 @@ public class CustomOptions {
     protected static void applyBackgroundColor(@NonNull View root, @IdRes int viewId, int color) {
         View view = root.findViewById(viewId);
         if (view != null)
-            view.setBackgroundColor(color);
+            applyBackgroundColor(view, color);
     }
 
+    protected static void applyBackgroundColor(@NonNull View view, int color) {
+        view.setBackgroundColor(color);
+    }
     public void applyToView(@NonNull View root) {
         applyHeadlineStyles(root);
         applyBodyStyles(root);
         applyCtaStyles(root);
         applySecondaryTextStyles(root);
+
+        if (backgroundColor != null) {
+            applyBackgroundColor(root, backgroundColor);
+        }
     }
 
 

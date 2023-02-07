@@ -117,7 +117,7 @@ public class BasicNativeAd extends NativeAdFactory {
                 advertiserView.setText(adContent.advertiser);
                 nativeAdView.setAdvertiserView(advertiserView);
             } else {
-                advertiserView.setVisibility(View.INVISIBLE);
+                advertiserView.setVisibility(View.GONE);
             }
         }
     }

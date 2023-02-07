@@ -2,12 +2,12 @@
 <com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFCFCFC">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFCFCFC"
         android:orientation="vertical">
 
         <LinearLayout
@@ -64,6 +64,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="1dp"
                         android:textColor="#FF333333"
+                        tools:visibility="gone"
                         android:textSize="13sp"
                         tools:text="FREE" />
 
@@ -74,6 +75,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="1dp"
                         android:textColor="#FF333333"
+                        tools:visibility="gone"
                         android:textSize="13sp"
                         tools:text="Google Play" />
 
