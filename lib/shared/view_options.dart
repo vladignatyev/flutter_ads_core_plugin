@@ -8,8 +8,8 @@ class NativeAdViewOptions {
 
 class ViewOptions {
   static const Map<String, NativeAdViewOptions> _options = {
-    NativeFactoryNames.inFeedLeft : NativeAdViewOptions(height: 120),
-    NativeFactoryNames.inFeedRight : NativeAdViewOptions(height: 120),
+    NativeFactoryNames.inFeedLeft : NativeAdViewOptions(height: 140),
+    NativeFactoryNames.inFeedRight : NativeAdViewOptions(height: 140),
     NativeFactoryNames.largeCentered : NativeAdViewOptions(height: 580),
     NativeFactoryNames.largeMediaTop : NativeAdViewOptions(height: 360),
     NativeFactoryNames.largeMediaBottom : NativeAdViewOptions(height: 360),
