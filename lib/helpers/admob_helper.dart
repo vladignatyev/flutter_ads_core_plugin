@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ads_core_plugin/flutter_ads_core_plugin.dart';
 import 'package:flutter_ads_core_plugin/helpers/ad_controller.dart';
 import 'package:flutter_ads_core_plugin/helpers/native_ad_container.dart';
 import 'package:flutter_ads_core_plugin/shared/custom_options.dart';
+import 'package:flutter_ads_core_plugin/shared/view_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 typedef AdLoadErrorCallback = void Function(String errorMessage);
@@ -181,12 +183,10 @@ class AdmobHelper {
       {required String adUnitId,
       required CustomOptions customOptions,
       int timeout = 5000,
-      required String nativeFactoryName}) {
+      required String nativeAdFactory}) {
     var completer = Completer();
 
     Map<String, Object> options = customOptions.convertToMap();
-
-    double blockHeight = 320; // TODO:
 
     var timeoutTimer = Timer(Duration(milliseconds: timeout), () {
       completer.complete(NativeAdContainer(null));
@@ -200,7 +200,7 @@ class AdmobHelper {
                     clickToExpandRequested: false)),
             adUnitId: adUnitId,
             customOptions: options,
-            factoryId: nativeFactoryName,
+            factoryId: nativeAdFactory,
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
                 print(error);
@@ -209,7 +209,7 @@ class AdmobHelper {
               },
               onAdLoaded: (ad) {
                 completer.complete(NativeAdContainer(SizedBox(
-                    height: blockHeight,
+                    height: ViewOptions.getOptions(nativeAdFactory).height,
                     child: AdWidget(ad: ad as AdWithView))));
 
                 timeoutTimer.cancel();
