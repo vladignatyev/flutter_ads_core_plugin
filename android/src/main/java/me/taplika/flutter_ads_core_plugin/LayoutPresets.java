@@ -3,6 +3,7 @@ package me.taplika.flutter_ads_core_plugin;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.taplika.flutter_ads_core_plugin.adfactory.AspectRatioDependentNativeAd;
 import me.taplika.flutter_ads_core_plugin.adfactory.BasicNativeAd;
 import me.taplika.flutter_ads_core_plugin.adfactory.base.NativeAdFactory;
 
@@ -16,5 +17,7 @@ public class LayoutPresets {
         put("large_media_top", new BasicNativeAd(R.layout.large_media_top));
         put("large_media_bottom", new BasicNativeAd(R.layout.large_media_bottom));
         put("no_media_centered", new BasicNativeAd(R.layout.no_media_centered));
+        put("large_media_top_flex", new AspectRatioDependentNativeAd(R.layout.large_media_top,
+                R.layout.large_media_side));
     }};
 }

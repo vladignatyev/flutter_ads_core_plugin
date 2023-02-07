@@ -1,6 +1,7 @@
 package me.taplika.flutter_ads_core_plugin.adfactory.base;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -15,7 +16,7 @@ import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
 
-abstract public class NativeAdFactory implements GoogleMobileAdsPlugin.NativeAdFactory {
+public abstract class NativeAdFactory implements GoogleMobileAdsPlugin.NativeAdFactory {
     final private String TAG = "NativeAdFactory";
 
     private Context context;
@@ -31,8 +32,10 @@ abstract public class NativeAdFactory implements GoogleMobileAdsPlugin.NativeAdF
     }
 
     @SuppressWarnings("unused")
-    protected @NonNull NativeAdView inflate(@NonNull Context context,
+    public @NonNull NativeAdView inflate(@NonNull Context context,
                                             @NonNull NativeAdContent adContent) {
+
+        Log.d(TAG, "Inflating layoutId from NativeAdFactory");
         return (NativeAdView) LayoutInflater.from(context).inflate(layoutId, null);
     }
 
