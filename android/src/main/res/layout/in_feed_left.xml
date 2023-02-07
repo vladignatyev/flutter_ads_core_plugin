@@ -62,10 +62,9 @@
                         android:id="@+id/ad_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="1dp"
                         android:textColor="#FF333333"
-                        tools:visibility="gone"
                         android:textSize="13sp"
                         tools:text="FREE" />
 
@@ -73,10 +72,9 @@
                         android:id="@+id/store"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="1dp"
                         android:textColor="#FF333333"
-                        tools:visibility="gone"
                         android:textSize="13sp"
                         tools:text="Google Play" />
 
@@ -100,6 +98,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginTop="1dp"
+                        android:layout_marginEnd="4dp"
                         android:autoLink="none"
                         android:ellipsize="end"
                         android:linksClickable="false"
