@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:background="#FFFEFEFE"
             android:orientation="horizontal"
-            android:padding="4dp">
+            android:padding="8dp"
+            >
 
             <ImageView
                 android:id="@+id/ad_icon"
@@ -114,10 +115,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:letterSpacing="0.05"
-                    android:lineSpacingExtra="2dp"
+                    android:lineSpacingExtra="1dp"
                     android:maxWidth="320dp"
-                    android:maxLines="2"
+                    android:maxLines="3"
                     android:textColor="#3f3f3f"
                     android:textSize="14sp"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
@@ -129,22 +129,26 @@
         <com.google.android.gms.ads.nativead.MediaView
             android:id="@+id/ad_media"
             android:layout_width="match_parent"
-            android:layout_height="204dp"
+            android:layout_height="180dp"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:background="#FFFEFEFE"
+            android:orientation="horizontal"
             android:gravity="bottom|center_horizontal"
-            android:orientation="horizontal">
+            android:background="#FFFEFEFE"
+            android:paddingTop="8dp"
+            >
 
             <Button
                 android:id="@+id/cta_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="54dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:backgroundTint="#006EC5"
+                android:gravity="center_horizontal|center_vertical"
                 android:paddingHorizontal="64dp"
                 android:textAlignment="gravity"
                 android:textColor="#FFFEFEFE"
