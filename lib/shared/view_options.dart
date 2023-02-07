@@ -8,12 +8,12 @@ class NativeAdViewOptions {
 
 class ViewOptions {
   static const Map<String, NativeAdViewOptions> _options = {
-    NativeFactoryNames.inFeedLeft : NativeAdViewOptions(height: 80),
-    NativeFactoryNames.inFeedRight : NativeAdViewOptions(height: 80),
-    NativeFactoryNames.largeCentered : NativeAdViewOptions(height: 80),
-    NativeFactoryNames.largeMediaTop : NativeAdViewOptions(height: 80),
-    NativeFactoryNames.largeMediaBottom : NativeAdViewOptions(height: 80),
-    NativeFactoryNames.noMediaCentered : NativeAdViewOptions(height: 80)
+    NativeFactoryNames.inFeedLeft : NativeAdViewOptions(height: 120),
+    NativeFactoryNames.inFeedRight : NativeAdViewOptions(height: 120),
+    NativeFactoryNames.largeCentered : NativeAdViewOptions(height: 580),
+    NativeFactoryNames.largeMediaTop : NativeAdViewOptions(height: 360),
+    NativeFactoryNames.largeMediaBottom : NativeAdViewOptions(height: 360),
+    NativeFactoryNames.noMediaCentered : NativeAdViewOptions(height: 240)
   };
 
   static NativeAdViewOptions getOptions(String factoryId) {
