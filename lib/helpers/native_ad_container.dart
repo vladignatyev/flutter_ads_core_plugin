@@ -6,7 +6,7 @@ class NativeAdContainer {
   NativeAdContainer(this.adView);
 
   Widget getView() {
-    return adView == null ? Container() : Expanded(child: adView!!);
-    // return adView ?? Expanded(child: adView) ?? Container();
+    // return adView == null ? Container() : Expanded(child: adView!!);
+    return adView ?? Container();
   }
 }
