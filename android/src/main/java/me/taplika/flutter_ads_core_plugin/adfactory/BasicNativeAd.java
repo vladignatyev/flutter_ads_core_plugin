@@ -1,5 +1,6 @@
 package me.taplika.flutter_ads_core_plugin.adfactory;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -45,8 +46,7 @@ public class BasicNativeAd extends NativeAdFactory {
         }
     }
 
-    @Override
-    protected void bindView(@NonNull NativeAdView nativeAdView,
+    public void bindView(@NonNull NativeAdView nativeAdView,
                             @NonNull NativeAdContent adContent) {
         @NonNull TextView headlineView = Objects.requireNonNull(nativeAdView.findViewById(R.id.headline));
         @NonNull TextView ctaView = Objects.requireNonNull(nativeAdView.findViewById(R.id.cta_button));

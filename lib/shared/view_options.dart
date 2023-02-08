@@ -13,7 +13,8 @@ class ViewOptions {
     NativeFactoryNames.largeCentered : NativeAdViewOptions(height: 580),
     NativeFactoryNames.largeMediaTop : NativeAdViewOptions(height: 360),
     NativeFactoryNames.largeMediaBottom : NativeAdViewOptions(height: 360),
-    NativeFactoryNames.noMediaCentered : NativeAdViewOptions(height: 240)
+    NativeFactoryNames.noMediaCentered : NativeAdViewOptions(height: 240),
+		NativeFactoryNames.largeMediaFlex : NativeAdViewOptions(height: 360)
   };
 
   static NativeAdViewOptions getOptions(String factoryId) {

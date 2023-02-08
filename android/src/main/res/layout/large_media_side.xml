@@ -3,40 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#333">
+    android:background="#00333333">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:orientation="vertical">
+        android:layout_height="320dp"
+        android:orientation="horizontal">
 
         <com.google.android.gms.ads.nativead.MediaView
             android:id="@+id/ad_media"
-            android:layout_width="match_parent"
-            android:layout_height="180dp" />
+            android:layout_width="244dp"
+            android:layout_height="320dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:background="#FFFEFEFE"
 
+            android:layout_height="320dp"
             android:paddingHorizontal="8dp"
             android:paddingTop="8dp"
-            android:paddingBottom="4dp"
+            android:paddingBottom="0dp"
             >
 
             <ImageView
                 android:id="@+id/ad_icon"
                 android:layout_width="72dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_height="72dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
                 android:contentDescription="@string/icon_content_description_text"
                 tools:src="@drawable/ic_baseline_star_24" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -44,10 +46,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="#FF333333"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="Lorem ipsum dolor sit amet. " />
 
@@ -55,17 +59,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
 
                     <TextView
                         android:id="@+id/ad_attribution_small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
                         android:background="#B36105"
                         android:paddingHorizontal="4dp"
-                        android:paddingVertical="2dp"
                         android:text="@string/ad_attribution_text"
                         android:textAlignment="center"
                         android:textColor="#FFFFFF"
@@ -76,44 +80,10 @@
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="16sp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="4dp"
                         android:numStars="5"
                         android:paddingTop="4dp" />
-
-                    <TextView
-                        android:id="@+id/ad_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginEnd="4dp"
-                        android:textColor="#FF333333"
-                        android:textSize="13sp"
-                        tools:text="FREE" />
-
-                    <TextView
-                        android:id="@+id/store"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginEnd="4dp"
-                        android:textColor="#FF333333"
-
-                        android:textSize="13sp"
-                        tools:text="Google Play" />
-
-                    <TextView
-                        android:id="@+id/advertiser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginTop="2dp"
-                        android:autoLink="none"
-                        android:ellipsize="end"
-                        android:linksClickable="false"
-                        android:maxLength="15"
-                        android:textColor="#006EC5"
-                        android:textSize="13sp"
-                        tools:text="https://some-uri.com" />
                 </LinearLayout>
 
                 <TextView
@@ -121,41 +91,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:gravity="center_horizontal"
                     android:lineSpacingExtra="1dp"
-                    android:maxWidth="320dp"
-                    android:maxLines="3"
+                    android:maxLines="4"
                     android:textColor="#3f3f3f"
                     android:textSize="14sp"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom|center_horizontal"
+                android:background="#FFFEFEFE"
+                android:paddingTop="8dp"
+                >
+
+                <Button
+                    android:id="@+id/cta_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:backgroundTint="#006EC5"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:textAlignment="gravity"
+                    android:textColor="#FFFEFEFE"
+                    android:textSize="16sp"
+                    tools:text="Install" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom|center_horizontal"
-            android:background="#FFFEFEFE"
-            android:paddingTop="8dp"
-            >
-
-            <Button
-                android:id="@+id/cta_button"
-                android:layout_width="wrap_content"
-                android:layout_height="54dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="#006EC5"
-                android:gravity="center_horizontal|center_vertical"
-                android:paddingHorizontal="64dp"
-                android:textAlignment="gravity"
-                android:textColor="#FFFEFEFE"
-                android:textSize="18sp"
-                tools:text="Install" />
-
         </LinearLayout>
-    </LinearLayout>
 
 </com.google.android.gms.ads.nativead.NativeAdView>
