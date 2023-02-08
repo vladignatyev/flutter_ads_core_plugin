@@ -33,7 +33,6 @@ class AdmobHelper {
       bool forcedMode = false,
       Function? onCompleteCallback,
       List<String>? testIdentifiers}) async {
-    
     if (forcedMode) ConsentInformation.instance.reset();
 
     ConsentDebugSettings debugSettings = ConsentDebugSettings(
@@ -45,16 +44,11 @@ class AdmobHelper {
 
     final paramsForStandartMode = ConsentRequestParameters();
 
-    
-
     ConsentInformation.instance.requestConsentInfoUpdate(
         debugMode ? paramsForDebugMode : paramsForStandartMode, () async {
-
-
       ConsentInformation.instance
           .isConsentFormAvailable()
           .then((isAvailable) async {
-
         if (!isAvailable) {
           if (onCompleteCallback != null) onCompleteCallback();
           return;
@@ -74,7 +68,6 @@ class AdmobHelper {
         if (onCompleteCallback != null) {
           _pollingConsentFormComplete(onCompleteCallback);
         }
-
       }).onError((error, stackTrace) {
         print(error);
       }).timeout(const Duration(seconds: 3));
@@ -183,6 +176,7 @@ class AdmobHelper {
       {required String adUnitId,
       required CustomOptions customOptions,
       int timeout = 5000,
+      OnAdFailedToLoadCallback? onAdFailedToLoad,
       required String nativeAdFactory}) {
     var completer = Completer();
 
@@ -204,6 +198,9 @@ class AdmobHelper {
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
                 print(error);
+
+                if (onAdFailedToLoad != null) onAdFailedToLoad(error.toString());
+
                 completer.complete(NativeAdContainer(null));
                 timeoutTimer.cancel();
               },
