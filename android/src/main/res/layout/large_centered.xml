@@ -20,6 +20,9 @@
             android:layout_height="340dp"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
+
+
+            android:id="@+id/background"
             >
 
             <ImageView

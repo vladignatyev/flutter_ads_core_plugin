@@ -54,8 +54,12 @@ public class CustomOptions {
             applyBackgroundColor(view, color);
     }
 
-    protected static void applyBackgroundColor(@NonNull View view, int color) {
-        view.setBackgroundColor(color);
+    protected static void applyBackgroundColor(@NonNull View root, int color) {
+        View view = root.findViewById(R.id.background);
+        if (view != null)
+            view.setBackgroundColor(color);
+        else
+            root.setBackgroundColor(color);
     }
     public void applyToView(@NonNull View root) {
         applyHeadlineStyles(root);

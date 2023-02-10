@@ -2,14 +2,17 @@
 <com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFCFCFC">
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="240dp"
+        android:background="#FFFEFEFE"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="16dp"
+
+        >
 
         <ImageView
             android:id="@+id/ad_icon"
