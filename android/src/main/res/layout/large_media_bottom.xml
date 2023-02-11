@@ -142,17 +142,19 @@
             android:gravity="bottom|center_horizontal"
             android:background="#FFFEFEFE"
             android:paddingTop="8dp"
+            android:paddingBottom="6dp"
             >
 
             <Button
                 android:id="@+id/cta_button"
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="#006EC5"
+                android:backgroundTint="#00C56E"
+                android:background="@drawable/bg_rounded"
                 android:gravity="center_horizontal|center_vertical"
-                android:paddingHorizontal="64dp"
+                android:paddingHorizontal="32dp"
                 android:textAlignment="gravity"
                 android:textColor="#FFFEFEFE"
                 android:textSize="18sp"

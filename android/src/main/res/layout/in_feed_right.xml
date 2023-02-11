@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="102dp"
         android:id="@+id/background"
         android:orientation="vertical">
 
@@ -50,7 +50,7 @@
                         android:layout_marginEnd="4dp"
                         android:layout_height="16sp"
                         android:numStars="5"
-                        android:paddingTop="4dp" />
+                        />
 
                     <TextView
                         android:id="@+id/ad_price"
@@ -77,7 +77,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
-                        android:background="#C60C74"
+                        android:background="#ffff8800"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="2dp"
                         android:text="@string/ad_attribution_text"
@@ -107,9 +107,9 @@
                 <Button
                     android:id="@+id/cta_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="-4dp"
-                    android:backgroundTint="#C5006E"
+                    android:layout_height="32dp"
+                    android:background="@drawable/rounded"
+                    android:backgroundTint="#00C56E"
                     android:gravity="fill_vertical"
                     android:includeFontPadding="false"
                     android:paddingHorizontal="24dp"
@@ -125,7 +125,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="4dp"
                 android:contentDescription="@string/icon_content_description_text"
                 tools:src="@drawable/ic_baseline_star_24" />

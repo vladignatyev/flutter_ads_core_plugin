@@ -6,11 +6,11 @@
     android:background="#333">
 
     <LinearLayout
-        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="360dp"
-        android:background="#FFFEFEFE"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/background"
+        android:background="#FFFEFEFE">
 
         <com.google.android.gms.ads.nativead.MediaView
             android:id="@+id/ad_media"
@@ -47,7 +47,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="#FF333333"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     tools:text="Lorem ipsum dolor sit amet. " />
 
@@ -137,17 +137,18 @@
             android:layout_height="wrap_content"
             android:gravity="bottom|center_horizontal"
             android:orientation="horizontal"
-            android:paddingTop="8dp">
+            android:paddingTop="4dp">
 
             <Button
                 android:id="@+id/cta_button"
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="#006EC5"
+                android:backgroundTint="#00C56E"
+                android:background="@drawable/bg_rounded"
                 android:gravity="center_horizontal|center_vertical"
-                android:paddingHorizontal="64dp"
+                android:paddingHorizontal="32dp"
                 android:textAlignment="gravity"
                 android:textColor="#FFFEFEFE"
                 android:textSize="18sp"

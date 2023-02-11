@@ -111,12 +111,14 @@
                     android:id="@+id/cta_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:backgroundTint="#006EC5"
+                    android:background="@drawable/bg_rounded"
+                    android:backgroundTint="#00C56E"
                     android:gravity="center_horizontal|center_vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="8dp"
                     android:textAlignment="gravity"
                     android:textColor="#FFFEFEFE"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     tools:text="Install" />
 
             </LinearLayout>
