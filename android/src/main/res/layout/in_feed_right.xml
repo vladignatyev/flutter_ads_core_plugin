@@ -2,13 +2,13 @@
 <com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFCFCFC">
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="102dp"
-        android:id="@+id/background"
+        android:background="#FFFCFCFC"
         android:orientation="vertical">
 
         <LinearLayout
@@ -47,17 +47,16 @@
                         android:id="@+id/ad_rating_bar"
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_height="16sp"
-                        android:numStars="5"
-                        />
+                        android:layout_marginEnd="4dp"
+                        android:numStars="5" />
 
                     <TextView
                         android:id="@+id/ad_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="1dp"
+                        android:layout_marginEnd="4dp"
                         android:textColor="#FF333333"
                         android:textSize="13sp"
                         tools:text="FREE" />
@@ -66,8 +65,8 @@
                         android:id="@+id/store"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="1dp"
+                        android:layout_marginEnd="4dp"
                         android:textColor="#FF333333"
                         android:textSize="13sp"
                         tools:text="Google Play" />
@@ -91,8 +90,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="1dp"
+                        android:layout_marginEnd="4dp"
                         android:autoLink="none"
                         android:ellipsize="end"
                         android:linksClickable="false"

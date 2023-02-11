@@ -10,9 +10,7 @@
         android:layout_height="240dp"
         android:background="#FFFEFEFE"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-
-        >
+        android:paddingHorizontal="16dp">
 
         <ImageView
             android:id="@+id/ad_icon"

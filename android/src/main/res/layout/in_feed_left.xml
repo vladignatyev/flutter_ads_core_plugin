@@ -2,13 +2,12 @@
 <com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="102dp"
-        android:id="@+id/background"
         android:background="#FFFEFEFE"
         android:orientation="vertical">
 
@@ -56,20 +55,19 @@
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="16sp"
-                        android:numStars="5"
                         android:layout_marginEnd="4dp"
+                        android:numStars="5"
                         android:paddingTop="4dp" />
 
                     <TextView
                         android:id="@+id/ad_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="1dp"
+                        android:layout_marginEnd="4dp"
                         android:textColor="#FF333333"
                         android:textSize="13sp"
                         tools:text="FREE" />
-
 
 
                     <TextView
@@ -85,15 +83,17 @@
                         android:textColor="#FFFFFF"
                         android:textSize="11sp"
                         tools:ignore="VisualLintBounds" />
+
                     <TextView
                         android:id="@+id/store"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="4dp"
                         android:layout_marginTop="1dp"
+                        android:layout_marginEnd="4dp"
                         android:textColor="#FF333333"
                         android:textSize="13sp"
                         tools:text="Google Play" />
+
                     <TextView
                         android:id="@+id/advertiser"
                         android:layout_width="wrap_content"
@@ -114,8 +114,8 @@
                 <Button
                     android:id="@+id/cta_button"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:layout_height="32dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/rounded"
                     android:backgroundTint="#00C56E"
                     android:gravity="fill_vertical"
