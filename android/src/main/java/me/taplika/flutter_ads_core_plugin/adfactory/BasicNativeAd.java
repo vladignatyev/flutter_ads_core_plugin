@@ -27,6 +27,9 @@ public class BasicNativeAd extends NativeAdFactory {
 
     protected void bindMediaView(NativeAdView nativeAdView, @Nullable MediaView mediaView, NativeAdContent adContent) {
         if (mediaView != null && adContent.mediaContent != null) {
+            if (!adContent.mediaContent.hasVideoContent())
+                mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+
             mediaView.setMediaContent(adContent.mediaContent);
             nativeAdView.setMediaView(mediaView);
         }
