@@ -18,6 +18,11 @@ class AdmobHelper {
     _waitStopperFlag = true;
   }
 
+  static addTestIdentifiers(List<String> testIdentifiers) {
+    MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(testDeviceIds: testIdentifiers));
+  }
+
   /// Ставить в точку входа main() приложения
   /// перед этим обязательно указать WidgetsFlutterBinding.ensureInitialized()
   /// перед runApp
