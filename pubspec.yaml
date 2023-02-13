@@ -13,6 +13,7 @@ dependencies:
   plugin_platform_interface: ^2.0.2
   google_mobile_ads: ^2.3.0
   skeletons: ^0.0.3
+  logger: 
 
 dev_dependencies:
   flutter_test:

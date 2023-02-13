@@ -8,11 +8,13 @@ import 'package:flutter_ads_core_plugin/helpers/native_ad_container.dart';
 import 'package:flutter_ads_core_plugin/shared/custom_options.dart';
 import 'package:flutter_ads_core_plugin/shared/view_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 
 typedef AdLoadErrorCallback = void Function(String errorMessage);
 typedef OnEarnedRewardCallback = void Function(String rewardName, int amount);
 
 class AdmobHelper {
+  static const int defaultTimeout = 15000;
   static bool _waitStopperFlag = false;
   static void stopWaitFunctions() {
     _waitStopperFlag = true;
@@ -20,7 +22,7 @@ class AdmobHelper {
 
   static addTestIdentifiers(List<String> testIdentifiers) {
     MobileAds.instance.updateRequestConfiguration(
-      RequestConfiguration(testDeviceIds: testIdentifiers));
+        RequestConfiguration(testDeviceIds: testIdentifiers));
   }
 
   /// Ставить в точку входа main() приложения
@@ -88,8 +90,6 @@ class AdmobHelper {
       return;
     }
 
-    print(await ConsentInformation.instance.getConsentStatus());
-
     if (await ConsentInformation.instance.getConsentStatus() ==
         ConsentStatus.obtained) {
       callback();
@@ -120,31 +120,23 @@ class AdmobHelper {
     return completer.future;
   }
 
-  static Future<void> showAdOpen(
+  static Future<void> showAppOpen(
       {required String adUnit,
       VoidCallback? onLoaded,
       int orientation = 0,
-      int timeoutMillis = 5000,
+      int timeoutMillis = defaultTimeout,
 
       /// Если указан контроллер, то показ рекламы запускается через него
       AdController? controller,
       AdLoadErrorCallback? onFailedToLoad}) async {
     var completer = Completer();
 
-    var timeOutTimer = Timer(Duration(milliseconds: timeoutMillis), () {
-      if (controller != null) {
-        controller.setError("Timeout");
-      }
-
-      completer.complete();
-    });
-
     AppOpenAd.load(
         adUnitId: adUnit,
         request: AdRequest(httpTimeoutMillis: timeoutMillis),
         adLoadCallback: AppOpenAdLoadCallback(
           onAdLoaded: (ad) {
-            print('$ad loaded');
+            Logger().d('$ad loaded');
 
             if (controller != null) {
               controller.setAd(ad);
@@ -155,7 +147,6 @@ class AdmobHelper {
             if (onLoaded != null) onLoaded();
 
             completer.complete();
-            timeOutTimer.cancel();
           },
           onAdFailedToLoad: (error) {
             if (controller != null) {
@@ -164,12 +155,11 @@ class AdmobHelper {
 
             if (onFailedToLoad != null) {
               onFailedToLoad(error.message);
-            } else {
-              print('Ad open ad failed to load: ${error.message}');
             }
 
+            Logger().e('Ad open ad failed to load: ${error.message}');
+
             completer.complete();
-            timeOutTimer.cancel();
           },
         ),
         orientation: orientation);
@@ -180,16 +170,12 @@ class AdmobHelper {
   static Future<dynamic> getNativeAd(
       {required String adUnitId,
       required CustomOptions customOptions,
-      int timeout = 5000,
+      int timeoutMillis = defaultTimeout,
       OnAdFailedToLoadCallback? onAdFailedToLoad,
       required String nativeAdFactory}) {
     var completer = Completer();
 
     Map<String, Object> options = customOptions.convertToMap();
-
-    var timeoutTimer = Timer(Duration(milliseconds: timeout), () {
-      completer.complete(NativeAdContainer(null));
-    });
 
     NativeAd(
             nativeAdOptions: NativeAdOptions(
@@ -204,20 +190,22 @@ class AdmobHelper {
               onAdFailedToLoad: (ad, error) {
                 print(error);
 
-                if (onAdFailedToLoad != null) onAdFailedToLoad(error.toString());
+                if (onAdFailedToLoad != null) {
+                  onAdFailedToLoad(error.toString());
+                }
 
                 completer.complete(NativeAdContainer(null));
-                timeoutTimer.cancel();
+                
               },
               onAdLoaded: (ad) {
                 completer.complete(NativeAdContainer(SizedBox(
                     height: ViewOptions.getOptions(nativeAdFactory).height,
                     child: AdWidget(ad: ad as AdWithView))));
 
-                timeoutTimer.cancel();
+                
               },
             ),
-            request: const AdRequest())
+            request: AdRequest(httpTimeoutMillis: timeoutMillis))
         .load();
 
     return completer.future;
@@ -227,14 +215,14 @@ class AdmobHelper {
       {required String adUnit,
       VoidCallback? onLoaded,
       int orientation = 0,
-      int timeoutMillis = 5000,
+      int timeoutMillis = defaultTimeout,
       AdLoadErrorCallback? onFailedToLoad}) {
     InterstitialAd.load(
         adUnitId: adUnit,
         request: AdRequest(httpTimeoutMillis: timeoutMillis),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (ad) {
-            print('$ad loaded');
+            Logger().d('$ad loaded');
 
             ad.show();
 
@@ -243,9 +231,10 @@ class AdmobHelper {
           onAdFailedToLoad: (error) {
             if (onFailedToLoad != null) {
               onFailedToLoad(error.message);
-            } else {
-              print('Ad open ad failed to load: ${error.message}');
-            }
+            } 
+            
+            Logger().e('Ad open ad failed to load: ${error.message}');
+            
           },
         ));
   }
@@ -253,7 +242,7 @@ class AdmobHelper {
   static void showRewardedInterstitialAd({
     required String adUnit,
     int orientation = 0,
-    int timeoutMillis = 5000,
+    int timeoutMillis = defaultTimeout,
     AdLoadErrorCallback? onFailedToLoad,
     OnEarnedRewardCallback? onEarnedReward,
     VoidCallback? onLoaded,
@@ -268,7 +257,7 @@ class AdmobHelper {
         request: AdRequest(httpTimeoutMillis: timeoutMillis),
         rewardedInterstitialAdLoadCallback:
             RewardedInterstitialAdLoadCallback(onAdLoaded: (ad) {
-          print("Rewarded Ad Loaded");
+          Logger().d("Rewarded Ad Loaded");
 
           if (onLoaded != null) onLoaded();
 
@@ -304,7 +293,7 @@ class AdmobHelper {
           if (onFailedToLoad != null) {
             onFailedToLoad(error.message);
           } else {
-            print('Reward ad failed to load: ${error.message}');
+            Logger().e('Reward ad failed to load: ${error.message}');
           }
         }));
   }
