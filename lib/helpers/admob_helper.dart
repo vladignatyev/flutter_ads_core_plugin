@@ -131,11 +131,18 @@ class AdmobHelper {
       AdLoadErrorCallback? onFailedToLoad}) async {
     var completer = Completer();
 
+    Timer timeoutTimer = Timer(Duration(milliseconds: timeoutMillis + 500), () {
+      controller?.setError("Timeout");
+      Logger().d('AppOpen Ad skipped by timeout');
+      completer.complete();
+    });
+
     AppOpenAd.load(
         adUnitId: adUnit,
         request: AdRequest(httpTimeoutMillis: timeoutMillis),
         adLoadCallback: AppOpenAdLoadCallback(
           onAdLoaded: (ad) {
+            timeoutTimer.cancel();
             Logger().d('$ad loaded');
 
             if (controller != null) {
@@ -149,6 +156,9 @@ class AdmobHelper {
             completer.complete();
           },
           onAdFailedToLoad: (error) {
+            timeoutTimer.cancel();
+            Logger().e('Ad open ad failed to load: ${error.message}');
+
             if (controller != null) {
               controller.setError(error.message);
             }
@@ -156,8 +166,6 @@ class AdmobHelper {
             if (onFailedToLoad != null) {
               onFailedToLoad(error.message);
             }
-
-            Logger().e('Ad open ad failed to load: ${error.message}');
 
             completer.complete();
           },
@@ -177,6 +185,11 @@ class AdmobHelper {
 
     Map<String, Object> options = customOptions.convertToMap();
 
+    Timer timeoutTimer = Timer(Duration(milliseconds: timeoutMillis + 500), () {
+      Logger().d('Native ad request skipped by timeout');
+      completer.complete();
+    });
+
     NativeAd(
             nativeAdOptions: NativeAdOptions(
                 videoOptions: VideoOptions(
@@ -188,21 +201,21 @@ class AdmobHelper {
             factoryId: nativeAdFactory,
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
-                print(error);
+                timeoutTimer.cancel();
+                Logger().e(error);
 
                 if (onAdFailedToLoad != null) {
                   onAdFailedToLoad(error.toString());
                 }
 
                 completer.complete(NativeAdContainer(null));
-                
               },
               onAdLoaded: (ad) {
+                Logger().d("Native ad loaded");
+                timeoutTimer.cancel();
                 completer.complete(NativeAdContainer(SizedBox(
                     height: ViewOptions.getOptions(nativeAdFactory).height,
                     child: AdWidget(ad: ad as AdWithView))));
-
-                
               },
             ),
             request: AdRequest(httpTimeoutMillis: timeoutMillis))
@@ -217,12 +230,14 @@ class AdmobHelper {
       int orientation = 0,
       int timeoutMillis = defaultTimeout,
       AdLoadErrorCallback? onFailedToLoad}) {
+    
+
     InterstitialAd.load(
         adUnitId: adUnit,
         request: AdRequest(httpTimeoutMillis: timeoutMillis),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (ad) {
-            Logger().d('$ad loaded');
+            Logger().d('Intertitial ad loaded');
 
             ad.show();
 
@@ -231,10 +246,9 @@ class AdmobHelper {
           onAdFailedToLoad: (error) {
             if (onFailedToLoad != null) {
               onFailedToLoad(error.message);
-            } 
-            
-            Logger().e('Ad open ad failed to load: ${error.message}');
-            
+            }
+
+            Logger().e('Intertitial ad failed to load: ${error.message}');
           },
         ));
   }
