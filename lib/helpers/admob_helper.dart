@@ -143,7 +143,7 @@ class AdmobHelper {
         adLoadCallback: AppOpenAdLoadCallback(
           onAdLoaded: (ad) {
             timeoutTimer.cancel();
-            Logger().d('$ad loaded');
+            Logger().d('AppOpen loaded');
 
             if (controller != null) {
               controller.setAd(ad);
@@ -202,7 +202,7 @@ class AdmobHelper {
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
                 timeoutTimer.cancel();
-                Logger().e(error);
+                Logger().e("Native ad failed load: ${error.message}");
 
                 if (onAdFailedToLoad != null) {
                   onAdFailedToLoad(error.toString());
