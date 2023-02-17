@@ -175,19 +175,19 @@ class AdmobHelper {
     return completer.future;
   }
 
-  static Future<dynamic> getNativeAd(
+  static Future<NativeAdContainer> getNativeAd(
       {required String adUnitId,
       required CustomOptions customOptions,
       int timeoutMillis = defaultTimeout,
       OnAdFailedToLoadCallback? onAdFailedToLoad,
       required String nativeAdFactory}) {
-    var completer = Completer();
+    var completer = Completer<NativeAdContainer>();
 
     Map<String, Object> options = customOptions.convertToMap();
 
     Timer timeoutTimer = Timer(Duration(milliseconds: timeoutMillis + 500), () {
       Logger().d('Native ad request skipped by timeout');
-      completer.complete();
+      completer.complete(NativeAdContainer(null));
     });
 
     NativeAd(
