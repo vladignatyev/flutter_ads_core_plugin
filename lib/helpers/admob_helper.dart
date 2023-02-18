@@ -123,6 +123,11 @@ class AdmobHelper {
   static Future<void> showAppOpen(
       {required String adUnit,
       VoidCallback? onLoaded,
+      VoidCallback? onImpression,
+      VoidCallback? onAdClicked,
+      VoidCallback? onDismissedFullScreen,
+      VoidCallback? onShowedFullScreen,
+      VoidCallback? onFailedToShowFullScreen,
       int orientation = 0,
       int timeoutMillis = defaultTimeout,
 
@@ -145,7 +150,32 @@ class AdmobHelper {
             timeoutTimer.cancel();
             Logger().d('AppOpen loaded');
 
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              onAdClicked: (ad) {
+                if (onAdClicked != null) onAdClicked();
+              },
+              onAdDismissedFullScreenContent: (ad) {
+                if (onDismissedFullScreen != null) {
+                  onDismissedFullScreen();
+                }
+              },
+              onAdShowedFullScreenContent: (ad) {
+                if (onShowedFullScreen != null) {
+                  onShowedFullScreen();
+                }
+              },
+              onAdFailedToShowFullScreenContent: (ad, error) {
+                if (onFailedToShowFullScreen != null) {
+                  onFailedToShowFullScreen();
+                }
+              },
+              onAdImpression: (ad) {
+                if (onImpression != null) onImpression();
+              },
+            );
+
             if (controller != null) {
+              
               controller.setAd(ad);
             } else {
               ad.show();
