@@ -120,26 +120,20 @@ class AdmobHelper {
     return completer.future;
   }
 
-  static Future<void> showAppOpen(
+  /// Метод подгружает AppOpen рекламу и передает контроллер
+  static Future<AppOpenAdController> preloadAppOpen(
       {required String adUnit,
-      VoidCallback? onLoaded,
-      VoidCallback? onImpression,
-      VoidCallback? onAdClicked,
-      VoidCallback? onDismissedFullScreen,
-      VoidCallback? onShowedFullScreen,
-      VoidCallback? onFailedToShowFullScreen,
+      VoidCallback? onAdLoaded,
       int orientation = 0,
       int timeoutMillis = defaultTimeout,
-
-      /// Если указан контроллер, то показ рекламы запускается через него
-      AdController? controller,
       AdLoadErrorCallback? onFailedToLoad}) async {
-    var completer = Completer();
+    var completer = Completer<AppOpenAdController>();
+    AppOpenAdController controller = AppOpenAdController();
 
     Timer timeoutTimer = Timer(Duration(milliseconds: timeoutMillis + 500), () {
-      controller?.setError("Timeout");
+      controller.setError("Timeout");
       Logger().d('AppOpen Ad skipped by timeout');
-      completer.complete();
+      completer.complete(controller);
     });
 
     AppOpenAd.load(
@@ -150,54 +144,23 @@ class AdmobHelper {
             timeoutTimer.cancel();
             Logger().d('AppOpen loaded');
 
-            ad.fullScreenContentCallback = FullScreenContentCallback(
-              onAdClicked: (ad) {
-                if (onAdClicked != null) onAdClicked();
-              },
-              onAdDismissedFullScreenContent: (ad) {
-                if (onDismissedFullScreen != null) {
-                  onDismissedFullScreen();
-                }
-              },
-              onAdShowedFullScreenContent: (ad) {
-                if (onShowedFullScreen != null) {
-                  onShowedFullScreen();
-                }
-              },
-              onAdFailedToShowFullScreenContent: (ad, error) {
-                if (onFailedToShowFullScreen != null) {
-                  onFailedToShowFullScreen();
-                }
-              },
-              onAdImpression: (ad) {
-                if (onImpression != null) onImpression();
-              },
-            );
+            controller.setAd(ad);
+            
+            if (onAdLoaded != null) onAdLoaded();
 
-            if (controller != null) {
-              
-              controller.setAd(ad);
-            } else {
-              ad.show();
-            }
-
-            if (onLoaded != null) onLoaded();
-
-            completer.complete();
+            completer.complete(controller);
           },
           onAdFailedToLoad: (error) {
             timeoutTimer.cancel();
             Logger().e('Ad open ad failed to load: ${error.message}');
 
-            if (controller != null) {
-              controller.setError(error.message);
-            }
-
+            controller.setError(error.message);
+            
             if (onFailedToLoad != null) {
               onFailedToLoad(error.message);
             }
 
-            completer.complete();
+            completer.complete(controller);
           },
         ),
         orientation: orientation);
@@ -260,8 +223,6 @@ class AdmobHelper {
       int orientation = 0,
       int timeoutMillis = defaultTimeout,
       AdLoadErrorCallback? onFailedToLoad}) {
-    
-
     InterstitialAd.load(
         adUnitId: adUnit,
         request: AdRequest(httpTimeoutMillis: timeoutMillis),
