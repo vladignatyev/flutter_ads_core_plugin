@@ -14,11 +14,7 @@ typedef AdLoadErrorCallback = void Function(String errorMessage);
 typedef OnEarnedRewardCallback = void Function(String rewardName, int amount);
 
 class AdmobHelper {
-  static const int defaultTimeout = 15000;
-  static bool _waitStopperFlag = false;
-  static void stopWaitFunctions() {
-    _waitStopperFlag = true;
-  }
+  static const int defaultTimeout = 15000;  
 
   static addTestIdentifiers(List<String> testIdentifiers) {
     MobileAds.instance.updateRequestConfiguration(
@@ -32,88 +28,6 @@ class AdmobHelper {
     await MobileAds.instance.initialize();
   }
 
-  /// Запрос разрешения на сбор личных данных для рекламы (только Евросоюз)
-  /// forcedMode - значит что запрашивать каждый раз
-  /// debugMode - режим тестирования, при этом принудительно присваивается регион ЕС
-  static void requestConsentInfo(
-      {bool debugMode = false,
-      bool forcedMode = false,
-      Function? onCompleteCallback,
-      List<String>? testIdentifiers}) async {
-    if (forcedMode) ConsentInformation.instance.reset();
-
-    ConsentDebugSettings debugSettings = ConsentDebugSettings(
-        debugGeography: DebugGeography.debugGeographyEea,
-        testIdentifiers: testIdentifiers);
-
-    final paramsForDebugMode =
-        ConsentRequestParameters(consentDebugSettings: debugSettings);
-
-    final paramsForStandartMode = ConsentRequestParameters();
-
-    ConsentInformation.instance.requestConsentInfoUpdate(
-        debugMode ? paramsForDebugMode : paramsForStandartMode, () async {
-      ConsentInformation.instance
-          .isConsentFormAvailable()
-          .then((isAvailable) async {
-        if (!isAvailable) {
-          if (onCompleteCallback != null) onCompleteCallback();
-          return;
-        }
-
-        // проверка на то что разрешение уже получено
-        if (forcedMode || (await ConsentInformation.instance.getConsentStatus() !=
-            ConsentStatus.obtained)) {
-          await _showConsentForm();
-        }
-
-        if (onCompleteCallback != null) {
-          _pollingConsentFormComplete(onCompleteCallback);
-        }
-      }).onError((error, stackTrace) {
-        print(error);
-      }).timeout(const Duration(seconds: 3));
-    }, (error) {
-      print("ERROR");
-      print(error.message);
-    });
-  }
-
-  static void _pollingConsentFormComplete(Function callback) async {
-    if (_waitStopperFlag == true) {
-      _waitStopperFlag = false;
-      return;
-    }
-
-    if (await ConsentInformation.instance.getConsentStatus() ==
-        ConsentStatus.obtained) {
-      callback();
-    } else {
-      await Future.delayed(const Duration(milliseconds: 500));
-      _pollingConsentFormComplete(callback);
-    }
-  }
-
-  static Future<void> _showConsentForm() async {
-    Completer completer = Completer();
-
-    ConsentForm.loadConsentForm(
-      (ConsentForm consentForm) async {
-        consentForm.show((formError) {
-          print(formError?.message);
-        });
-
-        completer.complete();
-      },
-      (FormError formError) {
-        print(formError.message);
-
-        completer.completeError(formError);
-      },
-    );
-
-    return completer.future;
-  }
 
   /// Метод подгружает AppOpen рекламу и передает контроллер
   static Future<AppOpenAdController> preloadAppOpen(
