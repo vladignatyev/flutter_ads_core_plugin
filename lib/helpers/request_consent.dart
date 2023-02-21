@@ -7,8 +7,8 @@ import 'package:logger/logger.dart';
 enum ConsentInfoReason { notRequired, obtained }
 
 /// Запрос разрешения на сбор личных данных для рекламы (только Евросоюз)
-/// forcedMode - значит что запрашивать каждый раз
-/// debugMode - режим тестирования, при этом принудительно присваивается регион ЕС
+/// [forcedMode] - значит что запрашивать каждый раз
+/// [debugMode] - режим тестирования, при этом принудительно присваивается регион ЕС
 class RequestConsent {
   final bool debugMode;
   final bool forcedMode;
@@ -20,13 +20,12 @@ class RequestConsent {
       {this.debugMode = false,
       this.forcedMode = false,
       this.onCompleteCallback,
-      this.testIdentifiers}) {
-    if (forcedMode) resetConsent();
-    if (debugMode) _setDebugMode();
-  }
+      this.testIdentifiers});
 
   Future<ConsentInfoReason> complete() async {
     final completer = Completer<ConsentInfoReason>();
+    if (forcedMode) resetConsent();
+    if (debugMode) _setDebugMode();
     await _consentUpdate(completer);
     return completer.future;
   }
@@ -42,9 +41,9 @@ class RequestConsent {
 
       ConsentStatus consentStatus = await _requestConsentStatus();
       Logger().d("Consent status is $consentStatus");
-      
+
       switch (consentStatus) {
-        case ConsentStatus.notRequired:          
+        case ConsentStatus.notRequired:
           completer.complete(ConsentInfoReason.notRequired);
           break;
 
@@ -52,26 +51,8 @@ class RequestConsent {
           completer.complete(ConsentInfoReason.obtained);
           break;
 
-        case ConsentStatus.required:
-          try {            
-            /// завершается данный вызов только после того
-            /// как форма по той или ной причине закрыта
-            /// Complete на OnConsentFormDismissedListener
-            await _showAndCompleteConsentForm();
-
-
-            /// вне зависимости от результата вызываем рекурсивно метод
-            /// если была ошибка при загрузке формы (но форма при этом доступна)
-            /// или если юзер нажал согласие
-            /// передаем экземпляр комплитера из данного вызова
-            _consentUpdate(completer);
-
-          } catch (error) {
-            
-            /// вызывается в случае OnConsentFormLoadFailureListener
-            /// завершаем комплитер текущего метода (_consentUpdate)
-            completer.completeError(error);
-          }
+        case ConsentStatus.required:          
+          _handleRequiredConsent(completer);
 
           break;
 
@@ -88,6 +69,25 @@ class RequestConsent {
     return completer.future;
   }
 
+  void _handleRequiredConsent(Completer<ConsentInfoReason> completer) async {
+    try {
+      /// завершается данный вызов только после того
+      /// как форма по той или ной причине закрыта
+      /// Complete на OnConsentFormDismissedListener
+      await _showAndCompleteConsentForm();
+
+      /// вне зависимости от результата вызываем рекурсивно метод
+      /// если была ошибка при загрузке формы (но форма при этом доступна)
+      /// или если юзер нажал согласие
+      /// передаем экземпляр комплитера из данного вызова
+      _consentUpdate(completer);
+    } catch (error) {
+      /// вызывается в случае OnConsentFormLoadFailureListener
+      /// завершаем комплитер текущего метода (_consentUpdate)
+      completer.completeError(error);
+    }
+  }
+
   Future<void> _showAndCompleteConsentForm() async {
     final completer = Completer();
 
@@ -97,7 +97,7 @@ class RequestConsent {
           Logger().e(formError.message);
         }
 
-        /// завершение комплитера на закрытие 
+        /// завершение комплитера на закрытие
         /// формы неважно по какой причине
         completer.complete();
       });
