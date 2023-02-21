@@ -61,15 +61,10 @@ class AdmobHelper {
           return;
         }
 
-        if (forcedMode) {
+        // проверка на то что разрешение уже получено
+        if (forcedMode || (await ConsentInformation.instance.getConsentStatus() !=
+            ConsentStatus.obtained)) {
           await _showConsentForm();
-        } else {
-          // проверка на то что разрешение уже получено
-          if (await ConsentInformation.instance.getConsentStatus() ==
-              ConsentStatus.obtained) {
-            if (onCompleteCallback != null) onCompleteCallback();
-            return;
-          }
         }
 
         if (onCompleteCallback != null) {
