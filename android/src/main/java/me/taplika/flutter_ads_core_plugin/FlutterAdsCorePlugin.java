@@ -37,8 +37,8 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
     public void unbindAdFactories() {
         Log.d(TAG, "unbindAdFactories");
 
-        LayoutPresets.factories.forEach((factoryName, factory) ->
-                factory.setContext(null));
+//        LayoutPresets.factories.forEach((factoryName, factory) ->
+//                factory.setContext(null));
     }
 
 

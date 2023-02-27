@@ -15,6 +15,7 @@ public class LayoutPresets {
         put("in_feed_right", new BasicNativeAd(R.layout.in_feed_right));
         put("large_centered", new BasicNativeAd(R.layout.large_centered));
         put("large_media_top", new BasicNativeAd(R.layout.large_media_top));
+        put("large_media_top_tall", new BasicNativeAd(R.layout.large_media_top_tall));
         put("large_media_bottom", new BasicNativeAd(R.layout.large_media_bottom));
         put("no_media_centered", new BasicNativeAd(R.layout.no_media_centered));
         put("large_media_top_flex", new AspectRatioDependentNativeAd(R.layout.large_media_top,

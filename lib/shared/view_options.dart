@@ -12,6 +12,7 @@ class ViewOptions {
     NativeFactoryNames.inFeedRight : NativeAdViewOptions(height: 102),
     NativeFactoryNames.largeCentered : NativeAdViewOptions(height: 580),
     NativeFactoryNames.largeMediaTop : NativeAdViewOptions(height: 360),
+    NativeFactoryNames.largeMediaTopTall : NativeAdViewOptions(height: 472),
     NativeFactoryNames.largeMediaBottom : NativeAdViewOptions(height: 360),
     NativeFactoryNames.noMediaCentered : NativeAdViewOptions(height: 240),
 		NativeFactoryNames.largeMediaFlex : NativeAdViewOptions(height: 360)
