@@ -63,11 +63,15 @@ class ApplovinHelper {
     final completer = Completer<ApplovinAd>();
 
     AppLovinMAX.setAppOpenAdListener(AppOpenAdListener(onAdLoadedCallback: (ad) {
+      
       completer.complete(ApplovinAd(ad));
       listener?.onAdLoadedCallback?.call();
+
     }, onAdLoadFailedCallback: (adUnitId, error) {
+      
       Logger().e(error);
       completer.completeError(error);
+
       listener?.onAdLoadFailedCallback?.call(error.message, error.code);
     }, onAdDisplayedCallback: (ad) {
       listener?.onAdDisplayedCallback?.call();
