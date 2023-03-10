@@ -4,7 +4,7 @@ version '1.0'
 buildscript {
     repositories {
         google()
-        mavenCentral()
+        mavenCentral()        
     }
 
     dependencies {
@@ -16,6 +16,7 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://android-sdk.is.com" }
     }
 }
 
@@ -34,9 +35,9 @@ android {
     }
 
     dependencies {
-        // TODO: Find a better solution for development setup.
-
-        // NOTE: Uncomment the line to enable XML layouts for Android Studio
-//        implementation "com.google.android.gms:play-services-ads:21.5.0"
+        implementation 'com.applovin:applovin-sdk:+'
+        implementation 'com.applovin.mediation:adcolony-adapter:+'
+        implementation 'com.applovin.mediation:google-adapter:+'
+        implementation 'com.applovin.mediation:ironsource-adapter:+'
     }
 }

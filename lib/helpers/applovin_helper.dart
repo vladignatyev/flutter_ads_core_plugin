@@ -46,8 +46,13 @@ class RewardedApplovinListener extends ApplovinListener {
 class ApplovinHelper {
   static Map? configuration;
 
-  static Future<void> init({required String sdkKey}) async {
+  static Future<void> init({required String sdkKey, bool verboseLogging = false}) async {
+    AppLovinMAX.setVerboseLogging(verboseLogging);
     configuration = await AppLovinMAX.initialize(sdkKey);
+  }
+
+  static void showMediationDebugger() {
+    AppLovinMAX.showMediationDebugger();
   }
 
   static bool isInitialized() {
@@ -58,17 +63,18 @@ class ApplovinHelper {
     return false;
   }
 
+  static Map? getConfiguration() {
+    return configuration;
+  }
+
   static Future<ApplovinAd> preloadAppOpen(
       {required String adUnitId, ApplovinListener? listener}) async {
     final completer = Completer<ApplovinAd>();
 
     AppLovinMAX.setAppOpenAdListener(AppOpenAdListener(onAdLoadedCallback: (ad) {
-      
       completer.complete(ApplovinAd(ad));
       listener?.onAdLoadedCallback?.call();
-
     }, onAdLoadFailedCallback: (adUnitId, error) {
-      
       Logger().e(error);
       completer.completeError(error);
 
