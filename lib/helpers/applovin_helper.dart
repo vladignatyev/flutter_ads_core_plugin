@@ -32,15 +32,18 @@ class ApplovinListener {
 
 class RewardedApplovinListener extends ApplovinListener {
   Function(ApplovinReward reward)? onAdReceivedRewardCallback;
+  Function(ApplovinAd ad)? onAdRevenuePaidCallback;
 
-  RewardedApplovinListener(
-      {this.onAdReceivedRewardCallback,
-      super.onAdClickedCallback,
-      super.onAdLoadFailedCallback,
-      super.onAdDisplayedCallback,
-      super.onAdDisplayFailedCallback,
-      super.onAdHiddenCallback,
-      super.onAdLoadedCallback});
+  RewardedApplovinListener({
+    this.onAdReceivedRewardCallback,
+    this.onAdRevenuePaidCallback,
+    super.onAdClickedCallback,
+    super.onAdLoadFailedCallback,
+    super.onAdDisplayedCallback,
+    super.onAdDisplayFailedCallback,
+    super.onAdHiddenCallback,
+    super.onAdLoadedCallback,
+  });
 }
 
 class ApplovinHelper {
@@ -124,7 +127,13 @@ class ApplovinHelper {
       {required String adUnitId, RewardedApplovinListener? listener}) {
     final completer = Completer<ApplovinAd>();
 
-    AppLovinMAX.setRewardedAdListener(RewardedAdListener(onAdLoadedCallback: (ad) {
+    AppLovinMAX.setRewardedAdListener(RewardedAdListener(
+      
+      onAdRevenuePaidCallback: (ad) {
+      
+      listener?.onAdRevenuePaidCallback?.call(ApplovinAd(ad));
+
+    }, onAdLoadedCallback: (ad) {
       completer.complete(ApplovinAd(ad));
       listener?.onAdLoadedCallback?.call();
     }, onAdLoadFailedCallback: (adUnitId, error) {
@@ -170,5 +179,13 @@ class ApplovinHelper {
     } else {
       Logger().e("Rewarded AD IS NOT READY");
     }
+  }
+
+  static void setHasUserConsent(bool hasUserConsent) {
+    AppLovinMAX.setHasUserConsent(hasUserConsent);
+  }
+
+  static void setDoNotSell(bool doNotSell) {
+    AppLovinMAX.setDoNotSell(doNotSell);
   }
 }
