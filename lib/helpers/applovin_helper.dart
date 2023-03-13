@@ -185,6 +185,10 @@ class ApplovinHelper {
     AppLovinMAX.setHasUserConsent(hasUserConsent);
   }
 
+  static void setIsAgeRestrictedUser(bool flag) {
+    AppLovinMAX.setIsAgeRestrictedUser(flag);
+  }
+
   static void setDoNotSell(bool doNotSell) {
     AppLovinMAX.setDoNotSell(doNotSell);
   }
