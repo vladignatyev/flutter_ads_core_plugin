@@ -86,6 +86,7 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
 
         bindAdFactories(binding);
         registerAdFactories();
+
     }
 
     @Override
