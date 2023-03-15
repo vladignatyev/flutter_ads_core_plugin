@@ -41,5 +41,7 @@ android {
         implementation 'com.applovin.mediation:google-adapter:+'
         implementation 'com.applovin.mediation:ironsource-adapter:+'
         implementation 'com.applovin.mediation:bytedance-adapter:+'
+				implementation 'com.applovin.mediation:unityads-adapter:+'
+				implementation 'com.applovin.mediation:chartboost-adapter:+'
     }
 }
