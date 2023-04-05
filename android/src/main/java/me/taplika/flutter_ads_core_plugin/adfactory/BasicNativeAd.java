@@ -1,8 +1,11 @@
 package me.taplika.flutter_ads_core_plugin.adfactory;
 
-import android.content.Context;
+import android.app.Activity;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -19,8 +22,14 @@ import me.taplika.flutter_ads_core_plugin.adfactory.base.NativeAdContent;
 import me.taplika.flutter_ads_core_plugin.adfactory.base.NativeAdFactory;
 
 public class BasicNativeAd extends NativeAdFactory {
-    public BasicNativeAd(int layoutId) {
+    public enum TextMeasureVariant { none, side_icon, large_centered, full_width, side_media}
+    public double measureHeight;
+
+    public final TextMeasureVariant textMeasureVariant;
+
+    public BasicNativeAd(int layoutId, TextMeasureVariant textMeasureVariant) {
         super();
+        this.textMeasureVariant = textMeasureVariant;
         setLayoutId(layoutId);
     }
 
@@ -51,6 +60,9 @@ public class BasicNativeAd extends NativeAdFactory {
 
     public void bindView(@NonNull NativeAdView nativeAdView,
                             @NonNull NativeAdContent adContent) {
+
+        @NonNull LinearLayout layoutView = Objects.requireNonNull(nativeAdView.findViewById(R.id.background));
+
         @NonNull TextView headlineView = Objects.requireNonNull(nativeAdView.findViewById(R.id.headline));
         @NonNull TextView ctaView = Objects.requireNonNull(nativeAdView.findViewById(R.id.cta_button));
 
@@ -123,5 +135,54 @@ public class BasicNativeAd extends NativeAdFactory {
                 advertiserView.setVisibility(View.GONE);
             }
         }
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) layoutView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+        Log.d("FlutterAdsCorePlugin", "Screen width = "+width);
+        Log.d("FlutterAdsCorePlugin", "Screen height = "+height);
+
+        if (textMeasureVariant == TextMeasureVariant.side_icon) {
+            int iconViewIndent = 0;
+            if (iconView != null) {
+                iconView.measure(0,0);
+                iconViewIndent = iconView.getMeasuredWidth();
+            }
+
+            headlineView.setWidth(width - iconViewIndent);
+
+            if (bodyView != null) {
+                bodyView.setWidth(width - iconViewIndent);
+            }
+        }
+
+        if (textMeasureVariant == TextMeasureVariant.full_width) {
+            headlineView.setWidth(width);
+
+            if (bodyView != null) {
+                bodyView.setWidth(width);
+            }
+        }
+
+        if (textMeasureVariant == TextMeasureVariant.side_media) {
+            int mediaViewIndent = 0;
+
+            if (mediaView != null) {
+                mediaView.measure(0,0);
+                mediaViewIndent = mediaView.getMeasuredWidth();
+            }
+            headlineView.setWidth(width - mediaViewIndent);
+
+            if (bodyView != null) {
+                bodyView.setWidth(width - mediaViewIndent);
+            }
+        }
+
+
+        layoutView.measure(width, height);
+        this.measureHeight = layoutView.getMeasuredHeight();
+
     }
 }

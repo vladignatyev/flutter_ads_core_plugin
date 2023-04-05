@@ -10,8 +10,8 @@ class MethodChannelFlutterAdsCorePlugin extends FlutterAdsCorePluginPlatform {
   final methodChannel = const MethodChannel('flutter_ads_core_plugin');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
+  Future<double?> getLastNativeAdMeasureHeight(String factoryId) async {
+    return methodChannel.invokeMethod<double>(
+        "getLastNativeAdMeasureHeight", <dynamic, dynamic>{"factoryId": factoryId});
   }
 }

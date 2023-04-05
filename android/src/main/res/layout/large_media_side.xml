@@ -18,9 +18,7 @@
             android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="320dp"
-
             android:background="#FFFEFEFE"
-
             android:orientation="vertical"
             android:paddingHorizontal="8dp"
             android:paddingTop="8dp"
@@ -53,7 +51,7 @@
                     android:textColor="#FF333333"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="Lorem ipsum dolor sit amet. " />
+                    tools:text="Lorem ipsum dolor sit amet.  ipsum dolor sit amet" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

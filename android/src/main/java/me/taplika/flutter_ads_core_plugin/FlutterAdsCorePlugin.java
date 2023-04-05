@@ -3,6 +3,9 @@ package me.taplika.flutter_ads_core_plugin;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 
 import io.flutter.embedding.engine.FlutterEngine;
@@ -14,6 +17,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin;
+import me.taplika.flutter_ads_core_plugin.adfactory.BasicNativeAd;
 
 
 /**
@@ -24,6 +28,8 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
     private static final String TAG = "FlutterAdsCorePlugin";
 
     private FlutterEngine flutterEngine;
+
+    private MethodChannel channel;
 
     public void bindAdFactories(ActivityPluginBinding binding) {
         Log.d(TAG, "bindAdFactories");
@@ -61,6 +67,9 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         Log.d(TAG, "onAttachedToEngine");
 
+        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_ads_core_plugin");
+        channel.setMethodCallHandler(this);
+
         flutterEngine = flutterPluginBinding.getFlutterEngine();
         flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
     }
@@ -69,14 +78,25 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding ignoredBinding) {
         Log.d(TAG, "onDetachedFromEngine");
 
+        channel.setMethodCallHandler(null);
+
         unbindAdFactories();
         unregisterAdFactories();
         flutterEngine = null;
     }
 
     @Override
-    public void onMethodCall(@NonNull MethodCall ignoredCall, @NonNull Result ignoredResult) {
+    public void onMethodCall(@NonNull MethodCall call, @NonNull final Result result) {
+        if (Objects.equals(call.method, "getLastNativeAdMeasureHeight")) {
+            BasicNativeAd nativeAd = ((BasicNativeAd) LayoutPresets.factories.get(call.<String>argument("factoryId")));
 
+            if (nativeAd != null) {
+                result.success(nativeAd.measureHeight);
+            } else {
+                result.error("0", "Factory not found", null);
+            }
+
+        }
     }
 
 

@@ -19,7 +19,7 @@ public class AspectRatioDependentNativeAd extends BasicNativeAd {
     @LayoutRes int verticalLayoutId;
 
     public AspectRatioDependentNativeAd(int defaultLayoutId, int verticalLayoutId) {
-        super(defaultLayoutId);
+        super(defaultLayoutId, TextMeasureVariant.side_media);
 
         this.verticalLayoutId = verticalLayoutId;
     }

@@ -8,7 +8,8 @@ abstract class FlutterAdsCorePluginPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlutterAdsCorePluginPlatform _instance = MethodChannelFlutterAdsCorePlugin();
+  static FlutterAdsCorePluginPlatform _instance =
+      MethodChannelFlutterAdsCorePlugin();
 
   /// The default instance of [FlutterAdsCorePluginPlatform] to use.
   ///
@@ -23,7 +24,5 @@ abstract class FlutterAdsCorePluginPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
+  Future<double?> getLastNativeAdMeasureHeight(String factoryId);
 }

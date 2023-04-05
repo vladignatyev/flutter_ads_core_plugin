@@ -16,8 +16,8 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://android-sdk.is.com" }
-        maven { url "https://artifact.bytedance.com/repository/pangle" }
+//        maven { url "https://android-sdk.is.com" }
+//        maven { url "https://artifact.bytedance.com/repository/pangle" }
     }
 }
 
@@ -36,12 +36,12 @@ android {
     }
 
     dependencies {
-        implementation 'com.applovin:applovin-sdk:+'
-        implementation 'com.applovin.mediation:adcolony-adapter:+'
-        implementation 'com.applovin.mediation:google-adapter:+'
-        implementation 'com.applovin.mediation:ironsource-adapter:+'
-        implementation 'com.applovin.mediation:bytedance-adapter:+'
-				implementation 'com.applovin.mediation:unityads-adapter:+'
-				implementation 'com.applovin.mediation:chartboost-adapter:+'
+//        implementation 'com.applovin:applovin-sdk:+'
+//        implementation 'com.applovin.mediation:adcolony-adapter:+'
+//        implementation 'com.applovin.mediation:google-adapter:+'
+//        implementation 'com.applovin.mediation:ironsource-adapter:+'
+//        implementation 'com.applovin.mediation:bytedance-adapter:+'
+//				implementation 'com.applovin.mediation:unityads-adapter:+'
+//				implementation 'com.applovin.mediation:chartboost-adapter:+'
     }
 }

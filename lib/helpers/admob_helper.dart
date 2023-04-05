@@ -1,12 +1,9 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ads_core_plugin/flutter_ads_core_plugin.dart';
+import 'package:flutter_ads_core_plugin/flutter_ads_core_plugin_method_channel.dart';
 import 'package:flutter_ads_core_plugin/helpers/ad_controller.dart';
 import 'package:flutter_ads_core_plugin/helpers/native_ad_container.dart';
-import 'package:flutter_ads_core_plugin/shared/custom_options.dart';
-import 'package:flutter_ads_core_plugin/shared/view_options.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 
@@ -14,7 +11,10 @@ typedef AdLoadErrorCallback = void Function(String errorMessage);
 typedef OnEarnedRewardCallback = void Function(String rewardName, int amount);
 
 class AdmobHelper {
-  static const int defaultTimeout = 15000;  
+  static const int defaultTimeout = 15000;
+
+  static final MethodChannelFlutterAdsCorePlugin _platform =
+      MethodChannelFlutterAdsCorePlugin();
 
   static addTestIdentifiers(List<String> testIdentifiers) {
     MobileAds.instance.updateRequestConfiguration(
@@ -27,7 +27,6 @@ class AdmobHelper {
   static Future<void> init() async {
     await MobileAds.instance.initialize();
   }
-
 
   /// Метод подгружает AppOpen рекламу и передает контроллер
   static Future<AppOpenAdController> preloadAppOpen(
@@ -54,7 +53,7 @@ class AdmobHelper {
             Logger().d('AppOpen loaded');
 
             controller.setAd(ad);
-            
+
             if (onAdLoaded != null) onAdLoaded();
 
             completer.complete(controller);
@@ -64,7 +63,7 @@ class AdmobHelper {
             Logger().e('Ad open ad failed to load: ${error.message}');
 
             controller.setError(error.message);
-            
+
             if (onFailedToLoad != null) {
               onFailedToLoad(error.message);
             }
@@ -112,12 +111,20 @@ class AdmobHelper {
 
                 completer.complete(NativeAdContainer(null));
               },
-              onAdLoaded: (ad) {
+              onAdLoaded: (ad) async {
                 Logger().d("Native ad loaded");
                 timeoutTimer.cancel();
+
+                AdWidget.optOutOfVisibilityDetectorWorkaround = false;
+
+                double? height = await _platform.getLastNativeAdMeasureHeight(nativeAdFactory);
+
+                Logger().d("Measure height = $height px");
+
+                height = (height ?? 0) / MediaQueryData.fromWindow(WidgetsBinding.instance.window).devicePixelRatio;
+
                 completer.complete(NativeAdContainer(SizedBox(
-                    height: ViewOptions.getOptions(nativeAdFactory).height,
-                    child: AdWidget(ad: ad as AdWithView))));
+                    height: height, child: AdWidget(ad: ad as AdWithView))));
               },
             ),
             request: AdRequest(httpTimeoutMillis: timeoutMillis))

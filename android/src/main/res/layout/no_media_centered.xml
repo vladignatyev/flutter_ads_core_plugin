@@ -39,7 +39,7 @@
                 android:textColor="#FF333333"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="Lorem ipsum dolor sit amet. ipsum dolor sit amet. " />
+                tools:text="Lorem ipsum dolor sit amet. ipsum dolor sit amet. Lorem ipsum dolor sit amet. ipsum dolor sit amet. Lorem ipsum dolor sit amet. ipsum dolor sit amet. " />
 
             <RatingBar
                 android:id="@+id/ad_rating_bar"
