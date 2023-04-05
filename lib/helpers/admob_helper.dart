@@ -115,7 +115,7 @@ class AdmobHelper {
                 Logger().d("Native ad loaded");
                 timeoutTimer.cancel();
 
-                AdWidget.optOutOfVisibilityDetectorWorkaround = false;
+                AdWidget.optOutOfVisibilityDetectorWorkaround = true;
 
                 double? height = await _platform.getLastNativeAdMeasureHeight(nativeAdFactory);
 
