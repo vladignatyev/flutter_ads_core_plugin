@@ -117,11 +117,14 @@ class AdmobHelper {
 
                 AdWidget.optOutOfVisibilityDetectorWorkaround = true;
 
-                double? height = await _platform.getLastNativeAdMeasureHeight(nativeAdFactory);
+                double? height = await _platform
+                    .getLastNativeAdMeasureHeight(nativeAdFactory);
 
                 Logger().d("Measure height = $height px");
 
-                height = (height ?? 0) / MediaQueryData.fromWindow(WidgetsBinding.instance.window).devicePixelRatio;
+                height = (height ?? 0) /
+                    MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+                        .devicePixelRatio;
 
                 completer.complete(NativeAdContainer(SizedBox(
                     height: height, child: AdWidget(ad: ad as AdWithView))));
@@ -217,5 +220,64 @@ class AdmobHelper {
             Logger().e('Reward ad failed to load: ${error.message}');
           }
         }));
+  }
+
+  static void showRewardedAd({
+    required String adUnit,
+    int orientation = 0,
+    int timeoutMillis = defaultTimeout,
+    AdLoadErrorCallback? onFailedToLoad,
+    OnEarnedRewardCallback? onEarnedReward,
+    VoidCallback? onLoaded,
+    VoidCallback? onImpression,
+    VoidCallback? onAdClicked,
+    VoidCallback? onDismissedFullScreen,
+    VoidCallback? onShowedFullScreen,
+    VoidCallback? onFailedToShowFullScreen,
+  }) {
+    RewardedAd.load(
+      adUnitId: adUnit,
+      request: AdRequest(httpTimeoutMillis: timeoutMillis),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(onAdLoaded: (ad) {
+        Logger().d("Rewarded Ad Loaded");
+
+        if (onLoaded != null) onLoaded();
+
+        ad.fullScreenContentCallback = FullScreenContentCallback(
+          onAdClicked: (ad) {
+            if (onAdClicked != null) onAdClicked();
+          },
+          onAdDismissedFullScreenContent: (ad) {
+            if (onDismissedFullScreen != null) {
+              onDismissedFullScreen();
+            }
+          },
+          onAdShowedFullScreenContent: (ad) {
+            if (onShowedFullScreen != null) {
+              onShowedFullScreen();
+            }
+          },
+          onAdFailedToShowFullScreenContent: (ad, error) {
+            if (onFailedToShowFullScreen != null) {
+              onFailedToShowFullScreen();
+            }
+          },
+          onAdImpression: (ad) {
+            if (onImpression != null) onImpression();
+          },
+        );
+        ad.show(onUserEarnedReward: (ad, reward) {
+          if (onEarnedReward != null) {
+            onEarnedReward(reward.type, reward.amount.toInt());
+          }
+        });
+      }, onAdFailedToLoad: (error) {
+        if (onFailedToLoad != null) {
+          onFailedToLoad(error.message);
+        } else {
+          Logger().e('Reward ad failed to load: ${error.message}');
+        }
+      }),
+    );
   }
 }
