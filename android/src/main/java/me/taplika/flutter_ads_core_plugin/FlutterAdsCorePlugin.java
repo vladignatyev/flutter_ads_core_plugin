@@ -1,6 +1,7 @@
 package me.taplika.flutter_ads_core_plugin;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -30,6 +31,8 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
     private FlutterEngine flutterEngine;
 
     private MethodChannel channel;
+
+    private Context applicationContext;
 
     public void bindAdFactories(ActivityPluginBinding binding) {
         Log.d(TAG, "bindAdFactories");
@@ -72,6 +75,23 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
 
         flutterEngine = flutterPluginBinding.getFlutterEngine();
         flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
+
+        applicationContext = flutterPluginBinding.getApplicationContext();
+
+    }
+
+    public String MD5(String md5) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+        }
+        return null;
     }
 
     @Override
@@ -97,6 +117,17 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
             }
 
         }
+
+        if (Objects.equals(call.method, "getAndroidTestId")) {
+            try {
+                String androidId = Settings.Secure.getString(applicationContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+                String deviceId = MD5(androidId).toUpperCase();
+                result.success(deviceId);
+            } catch (Exception e) {
+                result.error("0", e.getMessage(), null);
+            }
+        }
+
     }
 
 
