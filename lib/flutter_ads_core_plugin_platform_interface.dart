@@ -25,4 +25,6 @@ abstract class FlutterAdsCorePluginPlatform extends PlatformInterface {
   }
 
   Future<double?> getLastNativeAdMeasureHeight(String factoryId);
+
+  Future<String?> getAndroidTestId();
 }
