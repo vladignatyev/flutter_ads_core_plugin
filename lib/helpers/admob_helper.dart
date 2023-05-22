@@ -3,91 +3,83 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ads_core_plugin/flutter_ads_core_plugin.dart';
 import 'package:flutter_ads_core_plugin/flutter_ads_core_plugin_method_channel.dart';
 import 'package:flutter_ads_core_plugin/helpers/ad_controller.dart';
+import 'package:flutter_ads_core_plugin/helpers/ad_interface.dart';
+import 'package:flutter_ads_core_plugin/helpers/ad_params.dart';
 import 'package:flutter_ads_core_plugin/helpers/native_ad_container.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 
-typedef AdLoadErrorCallback = void Function(String errorMessage);
-typedef OnEarnedRewardCallback = void Function(String rewardName, int amount);
-
-class AdmobHelper {
+class AdmobHelper extends AdHelper
+    implements IAdInterstitial, IAppOpen, INativeAd, IRewardedAd, IRewardedInterstitialAd {
   static const int defaultTimeout = 15000;
 
-  static final MethodChannelFlutterAdsCorePlugin _platform =
-      MethodChannelFlutterAdsCorePlugin();
+  static final MethodChannelFlutterAdsCorePlugin _platform = MethodChannelFlutterAdsCorePlugin();
 
-  static addTestIdentifiers(List<String> testIdentifiers) {
-    MobileAds.instance.updateRequestConfiguration(
-        RequestConfiguration(testDeviceIds: testIdentifiers));
+  @override
+  void addTestIdentifiers(List<String> testIdentifiers) {
+    MobileAds.instance
+        .updateRequestConfiguration(RequestConfiguration(testDeviceIds: testIdentifiers));
   }
 
   /// Ставить в точку входа main() приложения
   /// перед этим обязательно указать WidgetsFlutterBinding.ensureInitialized()
   /// перед runApp
-  static Future<void> init() async {
+  @override
+  Future<void> init() async {
     await MobileAds.instance.initialize();
   }
 
   /// Метод подгружает AppOpen рекламу и передает контроллер
-  static Future<AppOpenAdController> preloadAppOpen(
-      {required String adUnit,
-      VoidCallback? onAdLoaded,
-      int orientation = 0,
-      int timeoutMillis = defaultTimeout,
-      AdLoadErrorCallback? onFailedToLoad}) async {
+  @override
+  Future<AppOpenAdController> preloadAppOpen(BaseAdParams params) async {
     var completer = Completer<AppOpenAdController>();
     AppOpenAdController controller = AppOpenAdController();
 
-    Timer timeoutTimer = Timer(Duration(milliseconds: timeoutMillis + 500), () {
+    Timer timeoutTimer = Timer(Duration(milliseconds: params.timeoutMillis + 500), () {
       controller.setError("Timeout");
-      Logger().d('AppOpen Ad skipped by timeout');
+      Logger().d('AppOpen Ad from ${runtimeType.toString()} skipped by timeout');
       completer.complete(controller);
     });
 
     AppOpenAd.load(
-        adUnitId: adUnit,
-        request: AdRequest(httpTimeoutMillis: timeoutMillis),
+        adUnitId: params.adUnit,
+        request: AdRequest(httpTimeoutMillis: params.timeoutMillis),
         adLoadCallback: AppOpenAdLoadCallback(
           onAdLoaded: (ad) {
             timeoutTimer.cancel();
-            Logger().d('AppOpen loaded');
+            Logger().d('AppOpen from ${runtimeType.toString()} loaded');
 
             controller.setAd(ad);
 
-            if (onAdLoaded != null) onAdLoaded();
+            params.onAdLoaded?.call();
 
             completer.complete(controller);
           },
           onAdFailedToLoad: (error) {
             timeoutTimer.cancel();
-            Logger().e('Ad open ad failed to load: ${error.message}');
+            Logger()
+                .e('AppOpen ad from ${runtimeType.toString()} failed to load: ${error.message}');
 
             controller.setError(error.message);
 
-            if (onFailedToLoad != null) {
-              onFailedToLoad(error.message);
-            }
+            params.onFailedToLoad?.call(error.message);
 
             completer.complete(controller);
           },
         ),
-        orientation: orientation);
+        orientation: 0);
 
     return completer.future;
   }
 
-  static Future<NativeAdContainer> getNativeAd(
-      {required String adUnitId,
-      required CustomOptions customOptions,
-      int timeoutMillis = defaultTimeout,
-      OnAdFailedToLoadCallback? onAdFailedToLoad,
-      required String nativeAdFactory}) {
+  @override
+  Future<NativeAdContainer> getNativeAd(NativeAdParams params) {
     var completer = Completer<NativeAdContainer>();
 
-    Map<String, Object> options = customOptions.convertToMap();
+    Map<String, Object> options = params.customOptions.convertToMap();
 
-    Timer timeoutTimer = Timer(Duration(milliseconds: timeoutMillis + 500), () {
-      Logger().d('Native ad request skipped by timeout');
+    Timer timeoutTimer = Timer(Duration(milliseconds: params.timeoutMillis + 500), () {
+      Logger().d('Native ad from ${runtimeType.toString()} request skipped by timeout');
       completer.complete(NativeAdContainer(null));
     });
 
@@ -97,186 +89,124 @@ class AdmobHelper {
                     startMuted: true,
                     customControlsRequested: false,
                     clickToExpandRequested: false)),
-            adUnitId: adUnitId,
+            adUnitId: params.adUnit,
             customOptions: options,
-            factoryId: nativeAdFactory,
+            factoryId: params.nativeAdFactory,
             listener: NativeAdListener(
               onAdFailedToLoad: (ad, error) {
                 timeoutTimer.cancel();
-                Logger().e("Native ad failed load: ${error.message}");
+                Logger()
+                    .e("Native ad from ${runtimeType.toString()} failed load: ${error.message}");
 
-                if (onAdFailedToLoad != null) {
-                  onAdFailedToLoad(error.toString());
-                }
+                params.onFailedToLoad?.call(error.message);
 
                 completer.complete(NativeAdContainer(null));
               },
               onAdLoaded: (ad) async {
-                Logger().d("Native ad loaded");
+                Logger().d("Native ad from ${runtimeType.toString()} loaded");
                 timeoutTimer.cancel();
 
                 AdWidget.optOutOfVisibilityDetectorWorkaround = true;
 
-                double? height = await _platform
-                    .getLastNativeAdMeasureHeight(nativeAdFactory);
+                double? height =
+                    await _platform.getLastNativeAdMeasureHeight(params.nativeAdFactory);
 
                 Logger().d("Measure height = $height px");
 
                 height = (height ?? 0) /
-                    MediaQueryData.fromWindow(WidgetsBinding.instance.window)
-                        .devicePixelRatio;
+                    MediaQueryData.fromWindow(WidgetsBinding.instance.window).devicePixelRatio;
 
-                completer.complete(NativeAdContainer(SizedBox(
-                    height: height, child: AdWidget(ad: ad as AdWithView))));
+                completer.complete(NativeAdContainer(
+                    SizedBox(height: height, child: AdWidget(ad: ad as AdWithView))));
               },
             ),
-            request: AdRequest(httpTimeoutMillis: timeoutMillis))
+            request: AdRequest(httpTimeoutMillis: params.timeoutMillis))
         .load();
 
     return completer.future;
   }
 
-  static void showInterstitialAd(
-      {required String adUnit,
-      VoidCallback? onLoaded,
-      int orientation = 0,
-      int timeoutMillis = defaultTimeout,
-      AdLoadErrorCallback? onFailedToLoad}) {
+  @override
+  void showInterstitialAd(BaseAdParams params) {
     InterstitialAd.load(
-        adUnitId: adUnit,
-        request: AdRequest(httpTimeoutMillis: timeoutMillis),
+        adUnitId: params.adUnit,
+        request: AdRequest(httpTimeoutMillis: params.timeoutMillis),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (ad) {
-            Logger().d('Intertitial ad loaded');
+            Logger().d('Intertitial ad from ${runtimeType.toString()} loaded');
 
             ad.show();
 
-            if (onLoaded != null) onLoaded();
+            params.onAdLoaded?.call();
           },
           onAdFailedToLoad: (error) {
-            if (onFailedToLoad != null) {
-              onFailedToLoad(error.message);
-            }
+            params.onFailedToLoad?.call(error.message);
 
-            Logger().e('Intertitial ad failed to load: ${error.message}');
+            Logger().e(
+                'Intertitial ad from ${runtimeType.toString()} failed to load: ${error.message}');
           },
         ));
   }
 
-  static void showRewardedInterstitialAd({
-    required String adUnit,
-    int orientation = 0,
-    int timeoutMillis = defaultTimeout,
-    AdLoadErrorCallback? onFailedToLoad,
-    OnEarnedRewardCallback? onEarnedReward,
-    VoidCallback? onLoaded,
-    VoidCallback? onImpression,
-    VoidCallback? onAdClicked,
-    VoidCallback? onDismissedFullScreen,
-    VoidCallback? onShowedFullScreen,
-    VoidCallback? onFailedToShowFullScreen,
-  }) {
+  @override
+  void showRewardedInterstitialAd(RewardAdParams params) {
     RewardedInterstitialAd.load(
-        adUnitId: adUnit,
-        request: AdRequest(httpTimeoutMillis: timeoutMillis),
-        rewardedInterstitialAdLoadCallback:
-            RewardedInterstitialAdLoadCallback(onAdLoaded: (ad) {
-          Logger().d("Rewarded Ad Loaded");
+        adUnitId: params.adUnit,
+        request: AdRequest(httpTimeoutMillis: params.timeoutMillis),
+        rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(onAdLoaded: (ad) {
+          Logger().d("Rewarded Ad from ${runtimeType.toString()} Loaded");
 
-          if (onLoaded != null) onLoaded();
+          params.onAdLoaded?.call();
 
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdClicked: (ad) {
-              if (onAdClicked != null) onAdClicked();
+              params.onAdClicked?.call();
             },
             onAdDismissedFullScreenContent: (ad) {
-              if (onDismissedFullScreen != null) {
-                onDismissedFullScreen();
-              }
+              params.onDismissedFullScreen?.call();
             },
             onAdShowedFullScreenContent: (ad) {
-              if (onShowedFullScreen != null) {
-                onShowedFullScreen();
-              }
+              params.onShowedFullScreen?.call();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
-              if (onFailedToShowFullScreen != null) {
-                onFailedToShowFullScreen();
-              }
+              params.onFailedToShowFullScreen?.call();
             },
             onAdImpression: (ad) {
-              if (onImpression != null) onImpression();
+              params.onImpression?.call();
             },
           );
           ad.show(onUserEarnedReward: (ad, reward) {
-            if (onEarnedReward != null) {
-              onEarnedReward(reward.type, reward.amount.toInt());
-            }
+            params.onEarnedReward?.call(reward.type, reward.amount.toInt());
           });
         }, onAdFailedToLoad: (error) {
-          if (onFailedToLoad != null) {
-            onFailedToLoad(error.message);
-          } else {
-            Logger().e('Reward ad failed to load: ${error.message}');
-          }
+          params.onFailedToLoad?.call(error.message);
+          Logger().e('Reward ad from ${runtimeType.toString()} failed to load: ${error.message}');
         }));
   }
 
-  static void showRewardedAd({
-    required String adUnit,
-    int orientation = 0,
-    int timeoutMillis = defaultTimeout,
-    AdLoadErrorCallback? onFailedToLoad,
-    OnEarnedRewardCallback? onEarnedReward,
-    VoidCallback? onLoaded,
-    VoidCallback? onImpression,
-    VoidCallback? onAdClicked,
-    VoidCallback? onDismissedFullScreen,
-    VoidCallback? onShowedFullScreen,
-    VoidCallback? onFailedToShowFullScreen,
-  }) {
+  @override
+  void showRewardedAd(RewardAdParams params) {
     RewardedAd.load(
-      adUnitId: adUnit,
-      request: AdRequest(httpTimeoutMillis: timeoutMillis),
+      adUnitId: params.adUnit,
+      request: AdRequest(httpTimeoutMillis: params.timeoutMillis),
       rewardedAdLoadCallback: RewardedAdLoadCallback(onAdLoaded: (ad) {
-        Logger().d("Rewarded Ad Loaded");
+        Logger().d("Rewarded Ad from ${runtimeType.toString()} Loaded");
 
-        if (onLoaded != null) onLoaded();
+        params.onAdLoaded?.call();
 
         ad.fullScreenContentCallback = FullScreenContentCallback(
-          onAdClicked: (ad) {
-            if (onAdClicked != null) onAdClicked();
-          },
-          onAdDismissedFullScreenContent: (ad) {
-            if (onDismissedFullScreen != null) {
-              onDismissedFullScreen();
-            }
-          },
-          onAdShowedFullScreenContent: (ad) {
-            if (onShowedFullScreen != null) {
-              onShowedFullScreen();
-            }
-          },
-          onAdFailedToShowFullScreenContent: (ad, error) {
-            if (onFailedToShowFullScreen != null) {
-              onFailedToShowFullScreen();
-            }
-          },
-          onAdImpression: (ad) {
-            if (onImpression != null) onImpression();
-          },
+          onAdClicked: (ad) => params.onAdClicked?.call(),
+          onAdDismissedFullScreenContent: (ad) => params.onDismissedFullScreen?.call(),
+          onAdShowedFullScreenContent: (ad) => params.onShowedFullScreen?.call(),
+          onAdFailedToShowFullScreenContent: (ad, error) => params.onFailedToShowFullScreen?.call(),
+          onAdImpression: (ad) => params,
         );
         ad.show(onUserEarnedReward: (ad, reward) {
-          if (onEarnedReward != null) {
-            onEarnedReward(reward.type, reward.amount.toInt());
-          }
+          params.onEarnedReward?.call(reward.type, reward.amount.toInt());          
         });
       }, onAdFailedToLoad: (error) {
-        if (onFailedToLoad != null) {
-          onFailedToLoad(error.message);
-        } else {
-          Logger().e('Reward ad failed to load: ${error.message}');
-        }
+          params.onFailedToLoad?.call(error.message);
+          Logger().e('Reward ad from ${runtimeType.toString()} failed to load: ${error.message}');
       }),
     );
   }
