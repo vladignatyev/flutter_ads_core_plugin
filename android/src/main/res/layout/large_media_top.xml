@@ -111,6 +111,7 @@
                         android:linksClickable="false"
                         android:textColor="#006EC5"
                         android:textSize="13sp"
+                        android:maxLines="1"
                         tools:text="https://some-uri.com" />
                 </LinearLayout>
 

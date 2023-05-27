@@ -182,7 +182,7 @@ public class BasicNativeAd extends NativeAdFactory {
 
 
         layoutView.measure(width, height);
-        this.measureHeight = layoutView.getMeasuredHeight();
+        this.measureHeight = layoutView.getMeasuredHeight() + 10;
 
     }
 }
