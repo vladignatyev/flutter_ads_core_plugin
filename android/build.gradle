@@ -36,6 +36,7 @@ android {
     }
 
     dependencies {
+        // implementation 'com.yandex.android:mobileads-mediation:5.4.0.0'
 //        implementation 'com.applovin:applovin-sdk:+'
 //        implementation 'com.applovin.mediation:adcolony-adapter:+'
 //        implementation 'com.applovin.mediation:google-adapter:+'

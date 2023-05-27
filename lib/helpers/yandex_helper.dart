@@ -10,7 +10,7 @@ class YandexHelper extends AdHelper implements IAdInterstitial, IRewardedAd {
 
   @override
   void init() async {
-    await MobileAds.initialize();
+    await MobileAds.initialize();    
   }
 
   @override
