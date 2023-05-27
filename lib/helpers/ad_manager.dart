@@ -55,9 +55,9 @@ class AdManager implements
       return (_helper as AdmobHelper).showInterstitialAd(params);
     }
 
-    if (_helper is YandexHelper) {
-      return (_helper as YandexHelper).showInterstitialAd(params);
-    }
+    // if (_helper is YandexHelper) {
+    //   return (_helper as YandexHelper).showInterstitialAd(params);
+    // }
   }
 
   @override
@@ -66,9 +66,9 @@ class AdManager implements
       return (_helper as AdmobHelper).showRewardedAd(params);
     }
 
-    if (_helper is YandexHelper) {
-      return (_helper as YandexHelper).showRewardedAd(params);
-    }
+    // if (_helper is YandexHelper) {
+    //   return (_helper as YandexHelper).showRewardedAd(params);
+    // }
   }
 
   @override

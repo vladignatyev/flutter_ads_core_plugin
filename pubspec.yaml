@@ -14,7 +14,7 @@ dependencies:
   google_mobile_ads: ^2.3.0
   skeletons: ^0.0.3
   logger: 
-  yandex_mobileads: ^1.1.0
+  # yandex_mobileads: ^1.1.0
   # applovin_max: ^2.4.4
 
 dev_dependencies:
