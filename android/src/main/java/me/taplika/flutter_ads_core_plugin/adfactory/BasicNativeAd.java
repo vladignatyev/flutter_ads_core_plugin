@@ -145,10 +145,10 @@ public class BasicNativeAd extends NativeAdFactory {
         Log.d("FlutterAdsCorePlugin", "Screen height = "+height);
 
         if (textMeasureVariant == TextMeasureVariant.side_icon) {
-            int iconViewIndent = 0;
+            int iconViewIndent = 250;
             if (iconView != null) {
                 iconView.measure(0,0);
-                iconViewIndent = iconView.getMeasuredWidth();
+                iconViewIndent = iconViewIndent + iconView.getMeasuredWidth();
             }
 
             headlineView.setWidth(width - iconViewIndent);
@@ -167,11 +167,11 @@ public class BasicNativeAd extends NativeAdFactory {
         }
 
         if (textMeasureVariant == TextMeasureVariant.side_media) {
-            int mediaViewIndent = 0;
+            int mediaViewIndent = 250;
 
             if (mediaView != null) {
                 mediaView.measure(0,0);
-                mediaViewIndent = mediaView.getMeasuredWidth();
+                mediaViewIndent = mediaViewIndent + mediaView.getMeasuredWidth();
             }
             headlineView.setWidth(width - mediaViewIndent);
 
@@ -182,7 +182,7 @@ public class BasicNativeAd extends NativeAdFactory {
 
 
         layoutView.measure(width, height);
-        this.measureHeight = layoutView.getMeasuredHeight() + 10;
+        this.measureHeight = layoutView.getMeasuredHeight();
 
     }
 }
