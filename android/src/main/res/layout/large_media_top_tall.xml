@@ -8,8 +8,7 @@
     <LinearLayout
         android:id="@+id/background"
         android:layout_width="match_parent"
-        android:layout_height="492dp"
-        android:background="#FFFEFEFE"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.google.android.gms.ads.nativead.MediaView
@@ -21,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-
+            android:paddingTop="6dp"
             android:paddingHorizontal="8dp"
             android:paddingBottom="4dp">
 
@@ -45,11 +44,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
+                    android:paddingTop="4dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    tools:text="Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. " />
+                    tools:text="Lorem ipsum dolor sit amet.  ipsum dolor sit amet ipsum dolor sit amet" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -105,41 +105,44 @@
                         android:id="@+id/advertiser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
+
                         android:layout_marginTop="2dp"
                         android:autoLink="none"
                         android:ellipsize="end"
                         android:linksClickable="false"
                         android:textColor="#006EC5"
                         android:textSize="13sp"
+                        android:maxLines="1"
                         tools:text="https://some-uri.com" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/body"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:lineSpacingExtra="1dp"
-                    android:maxWidth="320dp"
-                    android:maxLines="3"
-                    android:textColor="#3f3f3f"
-                    android:textSize="14sp"
-                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
-
             </LinearLayout>
+
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="1dp"
+            android:maxLines="3"
+            android:textColor="#3f3f3f"
+            android:textSize="14sp"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. officia deserunt mollit anim id est laborum." />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="65dp"
             android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/cta_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"

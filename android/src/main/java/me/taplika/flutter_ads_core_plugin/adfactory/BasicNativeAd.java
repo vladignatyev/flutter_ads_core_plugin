@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -39,7 +40,12 @@ public class BasicNativeAd extends NativeAdFactory {
 //            if (!adContent.mediaContent.hasVideoContent())
 //            mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            mediaView.setMediaContent(adContent.mediaContent);
+            if (adContent.mediaContent.getMainImage().getIntrinsicWidth() < adContent.mediaContent.getMainImage().getIntrinsicHeight()) {
+                mediaView.setImageScaleType(ImageView.ScaleType.FIT_CENTER);
+            } else {
+                mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
+
             nativeAdView.setMediaView(mediaView);
         }
     }
@@ -104,7 +110,7 @@ public class BasicNativeAd extends NativeAdFactory {
                 bodyView.setText(adContent.body);
                 nativeAdView.setBodyView(bodyView);
             } else {
-                bodyView.setVisibility(View.INVISIBLE);
+                bodyView.setVisibility(View.GONE);
             }
         }
 
@@ -141,6 +147,7 @@ public class BasicNativeAd extends NativeAdFactory {
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
 
+
         Log.d("FlutterAdsCorePlugin", "Screen width = "+width);
         Log.d("FlutterAdsCorePlugin", "Screen height = "+height);
 
@@ -159,10 +166,17 @@ public class BasicNativeAd extends NativeAdFactory {
         }
 
         if (textMeasureVariant == TextMeasureVariant.full_width) {
-            headlineView.setWidth(width);
+            //headlineView.setWidth(width);
+
+            int textWidth = (int) (width * 0.9);
+
+            if (mediaView != null) {
+                mediaView.measure(width,height);
+                textWidth = mediaView.getMeasuredWidth();
+            }
 
             if (bodyView != null) {
-                bodyView.setWidth(width);
+                bodyView.setWidth(textWidth);
             }
         }
 
