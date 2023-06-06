@@ -84,9 +84,9 @@ class AdmobHelper extends AdHelper
     });
 
     NativeAd(
-            nativeAdOptions: NativeAdOptions(
+            nativeAdOptions: NativeAdOptions(              
                 videoOptions: VideoOptions(
-                    startMuted: true,
+                    startMuted: false,
                     customControlsRequested: false,
                     clickToExpandRequested: false)),
             adUnitId: params.adUnit,

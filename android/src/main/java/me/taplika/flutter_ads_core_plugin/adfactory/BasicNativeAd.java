@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.ads.VideoOptions;
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
@@ -37,9 +38,6 @@ public class BasicNativeAd extends NativeAdFactory {
 
     protected void bindMediaView(NativeAdView nativeAdView, @Nullable MediaView mediaView, NativeAdContent adContent) {
         if (mediaView != null && adContent.mediaContent != null) {
-//            if (!adContent.mediaContent.hasVideoContent())
-//            mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
-
             if (adContent.mediaContent.getMainImage().getIntrinsicWidth() < adContent.mediaContent.getMainImage().getIntrinsicHeight()) {
                 mediaView.setImageScaleType(ImageView.ScaleType.FIT_CENTER);
             } else {
