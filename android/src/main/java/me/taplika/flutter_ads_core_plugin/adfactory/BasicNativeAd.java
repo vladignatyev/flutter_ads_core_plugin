@@ -167,11 +167,11 @@ public class BasicNativeAd extends NativeAdFactory {
             //headlineView.setWidth(width);
 
             int textWidth = (int) (width * 0.9);
-
-            if (mediaView != null) {
-                mediaView.measure(width,height);
-                textWidth = mediaView.getMeasuredWidth();
-            }
+//
+//            if (mediaView != null) {
+//                mediaView.measure(0,0);
+//                textWidth = mediaView.getMeasuredWidth();
+//            }
 
             if (bodyView != null) {
                 bodyView.setWidth(textWidth);
