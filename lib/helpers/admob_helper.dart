@@ -154,7 +154,7 @@ class AdmobHelper extends AdHelper
         adUnitId: params.adUnit,
         request: AdRequest(httpTimeoutMillis: params.timeoutMillis),
         rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(onAdLoaded: (ad) {
-          Logger().d("Rewarded Ad from ${runtimeType.toString()} Loaded");
+          Logger().d("Rewarded Interstitial Ad from ${runtimeType.toString()} Loaded");
 
           params.onAdLoaded?.call();
 
@@ -180,7 +180,7 @@ class AdmobHelper extends AdHelper
           });
         }, onAdFailedToLoad: (error) {
           params.onFailedToLoad?.call(error.message);
-          Logger().e('Reward ad from ${runtimeType.toString()} failed to load: ${error.message}');
+          Logger().e('Reward Interstitial Ad from ${runtimeType.toString()} failed to load: ${error.message}');
         }));
   }
 
