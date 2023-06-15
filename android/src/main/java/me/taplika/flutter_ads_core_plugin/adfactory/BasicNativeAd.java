@@ -38,14 +38,15 @@ public class BasicNativeAd extends NativeAdFactory {
 
     protected void bindMediaView(NativeAdView nativeAdView, @Nullable MediaView mediaView, NativeAdContent adContent) {
         if (mediaView != null && adContent.mediaContent != null) {
-            if (adContent.mediaContent.getMainImage().getIntrinsicWidth() < adContent.mediaContent.getMainImage().getIntrinsicHeight()) {
-                mediaView.setImageScaleType(ImageView.ScaleType.FIT_CENTER);
-            } else {
-                mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            mediaView.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
+            if (adContent.mediaContent.getMainImage() != null) {
+                if (adContent.mediaContent.getMainImage().getIntrinsicWidth() < adContent.mediaContent.getMainImage().getIntrinsicHeight()) {
+                    mediaView.setImageScaleType(ImageView.ScaleType.FIT_CENTER);
+                }
             }
-
-            nativeAdView.setMediaView(mediaView);
         }
+
+        nativeAdView.setMediaView(mediaView);
     }
 
     protected void bindStarRating(NativeAdView nativeAdView, @Nullable View starRating, NativeAdContent adContent) {
@@ -164,14 +165,8 @@ public class BasicNativeAd extends NativeAdFactory {
         }
 
         if (textMeasureVariant == TextMeasureVariant.full_width) {
-            //headlineView.setWidth(width);
 
             int textWidth = (int) (width * 0.9);
-//
-//            if (mediaView != null) {
-//                mediaView.measure(0,0);
-//                textWidth = mediaView.getMeasuredWidth();
-//            }
 
             if (bodyView != null) {
                 bodyView.setWidth(textWidth);

@@ -108,7 +108,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:background="@drawable/rounded"
-                    android:backgroundTint="#00C56E"
                     android:gravity="fill_vertical"
                     android:includeFontPadding="false"
                     android:paddingHorizontal="24dp"

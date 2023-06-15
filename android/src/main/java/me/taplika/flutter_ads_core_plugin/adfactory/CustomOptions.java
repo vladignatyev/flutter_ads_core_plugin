@@ -1,7 +1,10 @@
 package me.taplika.flutter_ads_core_plugin.adfactory;
 
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -48,6 +51,12 @@ public class CustomOptions {
             textView.setTextColor(color);
     }
 
+    protected static void applyCtaBackgroundColor(@NonNull View root, @IdRes int viewId, int color) {
+        Button button = root.findViewById(viewId);
+        if (button != null)
+            button.setBackgroundColor(color);
+    }
+
     protected static void applyBackgroundColor(@NonNull View root, @IdRes int viewId, int color) {
         View view = root.findViewById(viewId);
         if (view != null)
@@ -86,8 +95,12 @@ public class CustomOptions {
     private void applyCtaStyles(@NonNull View root) {
         if (ctaTextColor != null)
             applyTextColor(root, R.id.cta_button, ctaTextColor);
-        if (ctaBackgroundColor != null)
+        if (ctaBackgroundColor != null) {
             applyBackgroundColor(root, R.id.cta_button, ctaBackgroundColor);
+            //applyCtaBackgroundColor(root, R.id.cta_button, ctaBackgroundColor);
+        } else {
+            applyBackgroundColor(root, R.id.cta_button, parseColor("#00C56E"));
+        }
     }
 
     private void applySecondaryTextStyles(@NonNull View root) {
