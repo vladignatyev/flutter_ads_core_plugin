@@ -52,6 +52,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'me.taplika.flutter_ads_core_plugin_example'
 }
 
 flutter {
