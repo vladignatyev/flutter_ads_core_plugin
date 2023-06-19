@@ -9,8 +9,9 @@ class BaseAdParams {
   final int timeoutMillis;
   final VoidCallback? onAdLoaded;
   final AdErrorCallback? onFailedToLoad;
+  final ChangeNotifier? listener;
   BaseAdParams(
-      {this.onAdLoaded, this.onFailedToLoad, required this.adUnit, required this.timeoutMillis});
+      {this.onAdLoaded, this.onFailedToLoad, required this.adUnit, required this.timeoutMillis, this.listener});
 }
 
 class NativeAdParams extends BaseAdParams {
@@ -22,6 +23,7 @@ class NativeAdParams extends BaseAdParams {
       required this.nativeAdFactory,
       required super.adUnit,
       required super.timeoutMillis,
+      super.listener,
       super.onFailedToLoad,
       super.onAdLoaded});
 }
@@ -43,6 +45,7 @@ class RewardAdParams extends BaseAdParams {
       this.onFailedToShowFullScreen,
       super.onAdLoaded,
       super.onFailedToLoad,
+      super.listener,
       required super.adUnit,
       required super.timeoutMillis});
 }

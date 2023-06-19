@@ -84,7 +84,7 @@ class AdmobHelper extends AdHelper
     });
 
     NativeAd(
-            nativeAdOptions: NativeAdOptions(              
+            nativeAdOptions: NativeAdOptions(
                 videoOptions: VideoOptions(
                     startMuted: false,
                     customControlsRequested: false,
@@ -175,12 +175,22 @@ class AdmobHelper extends AdHelper
               params.onImpression?.call();
             },
           );
-          ad.show(onUserEarnedReward: (ad, reward) {
-            params.onEarnedReward?.call(reward.type, reward.amount.toInt());
-          });
+
+          if (params.listener != null) {
+            params.listener!.addListener(() {
+              ad.show(onUserEarnedReward: (ad, reward) {
+                params.onEarnedReward?.call(reward.type, reward.amount.toInt());
+              });
+            });
+          } else {
+            ad.show(onUserEarnedReward: (ad, reward) {
+              params.onEarnedReward?.call(reward.type, reward.amount.toInt());
+            });
+          }
         }, onAdFailedToLoad: (error) {
           params.onFailedToLoad?.call(error.message);
-          Logger().e('Reward Interstitial Ad from ${runtimeType.toString()} failed to load: ${error.message}');
+          Logger().e(
+              'Reward Interstitial Ad from ${runtimeType.toString()} failed to load: ${error.message}');
         }));
   }
 
@@ -202,11 +212,11 @@ class AdmobHelper extends AdHelper
           onAdImpression: (ad) => params,
         );
         ad.show(onUserEarnedReward: (ad, reward) {
-          params.onEarnedReward?.call(reward.type, reward.amount.toInt());          
+          params.onEarnedReward?.call(reward.type, reward.amount.toInt());
         });
       }, onAdFailedToLoad: (error) {
-          params.onFailedToLoad?.call(error.message);
-          Logger().e('Reward ad from ${runtimeType.toString()} failed to load: ${error.message}');
+        params.onFailedToLoad?.call(error.message);
+        Logger().e('Reward ad from ${runtimeType.toString()} failed to load: ${error.message}');
       }),
     );
   }
