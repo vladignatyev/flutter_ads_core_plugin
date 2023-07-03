@@ -74,7 +74,7 @@ public class FlutterAdsCorePlugin implements FlutterPlugin, MethodCallHandler, A
         channel.setMethodCallHandler(this);
 
         flutterEngine = flutterPluginBinding.getFlutterEngine();
-        flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
+        //flutterEngine.getPlugins().add(new GoogleMobileAdsPlugin());
 
         applicationContext = flutterPluginBinding.getApplicationContext();
 

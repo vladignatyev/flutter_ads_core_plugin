@@ -26,7 +26,11 @@ class AdmobHelper extends AdHelper
   /// перед runApp
   @override
   Future<void> init() async {
-    await MobileAds.instance.initialize();
+    await MobileAds.instance.initialize().then((initStatus) {
+      initStatus.adapterStatuses.forEach((key, value) {
+        Logger().wtf(key);
+      });
+    });
   }
 
   /// Метод подгружает AppOpen рекламу и передает контроллер
