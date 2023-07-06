@@ -5,8 +5,7 @@ import 'flutter_ads_core_plugin_platform_interface.dart';
 
 /// An implementation of [FlutterAdsCorePluginPlatform] that uses method channels.
 class MethodChannelFlutterAdsCorePlugin extends FlutterAdsCorePluginPlatform {
-  /// The method channel used to interact with the native platform.
-  @visibleForTesting
+  /// The method channel used to interact with the native platform.  
   final methodChannel = const MethodChannel('flutter_ads_core_plugin');
 
   @override

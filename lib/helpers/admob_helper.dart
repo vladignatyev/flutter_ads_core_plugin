@@ -31,6 +31,7 @@ class AdmobHelper extends AdHelper
         Logger().wtf(key);
       });
     });
+
   }
 
   /// Метод подгружает AppOpen рекламу и передает контроллер
