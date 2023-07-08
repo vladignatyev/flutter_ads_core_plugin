@@ -6,6 +6,7 @@ import 'package:flutter_ads_core_plugin/helpers/ad_controller.dart';
 import 'package:flutter_ads_core_plugin/helpers/ad_interface.dart';
 import 'package:flutter_ads_core_plugin/helpers/ad_params.dart';
 import 'package:flutter_ads_core_plugin/helpers/native_ad_container.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 
@@ -27,11 +28,11 @@ class AdmobHelper extends AdHelper
   @override
   Future<void> init() async {
     await MobileAds.instance.initialize().then((initStatus) {
+      Fluttertoast.showToast(msg: "Mediations count: ${initStatus.adapterStatuses.length}");
       initStatus.adapterStatuses.forEach((key, value) {
         Logger().wtf(key);
       });
     });
-
   }
 
   /// Метод подгружает AppOpen рекламу и передает контроллер
