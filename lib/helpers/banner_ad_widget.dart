@@ -8,7 +8,6 @@ class BannerAdWidget extends StatefulWidget {
   final String adUnit;
   final bool showSkeleton;
   final int timeoutMillis;
-  final AdSize adSize;
   final VoidCallback? onLoaded;
   final OnAdFailedToLoadCallback? onFailedToLoad;
   const BannerAdWidget(
@@ -16,8 +15,7 @@ class BannerAdWidget extends StatefulWidget {
       required this.adUnit,
       this.onFailedToLoad,
       required this.onLoaded,
-      required this.showSkeleton,
-      required this.adSize,
+      required this.showSkeleton,      
       this.timeoutMillis = 5000})
       : super(key: key);
 
@@ -61,8 +59,8 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      double adWidth = widget.adSize.width.toDouble();
-      double adHeight = widget.adSize.height.toDouble();
+      double adWidth = AdSize.fullBanner.width.toDouble();
+      double adHeight = AdSize.fullBanner.height.toDouble();
       if (adWidget == null) {
         if (widget.showSkeleton) {
           return SizedBox(
