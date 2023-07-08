@@ -27,8 +27,7 @@ class AdmobHelper extends AdHelper
   /// перед runApp
   @override
   Future<void> init() async {
-    await MobileAds.instance.initialize().then((initStatus) {
-      Fluttertoast.showToast(msg: "Mediations count: ${initStatus.adapterStatuses.length}");
+    await MobileAds.instance.initialize().then((initStatus) {      
       initStatus.adapterStatuses.forEach((key, value) {
         Logger().wtf(key);
       });
