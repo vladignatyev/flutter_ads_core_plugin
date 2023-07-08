@@ -14,7 +14,6 @@ dependencies:
   google_mobile_ads: ^3.0.0
   skeletons: ^0.0.3
   logger: 
-  fluttertoast: ^8.2.2
   # yandex_mobileads: ^1.1.0
   # applovin_max: ^2.4.4
 
