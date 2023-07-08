@@ -10,12 +10,14 @@ class BannerAdWidget extends StatefulWidget {
   final int timeoutMillis;
   final VoidCallback? onLoaded;
   final OnAdFailedToLoadCallback? onFailedToLoad;
+  final int maxWidth;
   const BannerAdWidget(
       {Key? key,
       required this.adUnit,
+      required this.maxWidth,
       this.onFailedToLoad,
       required this.onLoaded,
-      required this.showSkeleton,      
+      required this.showSkeleton,
       this.timeoutMillis = 5000})
       : super(key: key);
 
@@ -29,7 +31,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   @override
   void initState() {
     final bannerAd = BannerAd(
-        size: AdSize.fullBanner,
+        size: AdSize.getInlineAdaptiveBannerAdSize(widget.maxWidth, 60),
         adUnitId: widget.adUnit,
         listener: BannerAdListener(
           onAdLoaded: (ad) {
@@ -66,13 +68,12 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
           return SizedBox(
               width: adWidth,
               height: adHeight,
-              child: SkeletonLine(
-                  style: SkeletonLineStyle(width: adWidth, height: adHeight)));
+              child: SkeletonLine(style: SkeletonLineStyle(width: adWidth, height: adHeight)));
         } else {
           return Container();
         }
       } else {
-        return SizedBox(width: adWidth, height: adHeight, child: adWidget);
+        return SizedBox(child: adWidget);
       }
     });
   }
