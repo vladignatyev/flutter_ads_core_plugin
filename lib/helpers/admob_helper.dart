@@ -26,7 +26,7 @@ class AdmobHelper extends AdHelper
   /// перед runApp
   @override
   Future<void> init() async {
-    await MobileAds.instance.initialize().then((initStatus) {      
+    await MobileAds.instance.initialize().then((initStatus) {
       initStatus.adapterStatuses.forEach((key, value) {
         Logger().wtf(key);
       });
@@ -110,7 +110,7 @@ class AdmobHelper extends AdHelper
                 Logger().d("Native ad from ${runtimeType.toString()} loaded");
                 timeoutTimer.cancel();
 
-                AdWidget.optOutOfVisibilityDetectorWorkaround = true;
+                // AdWidget.optOutOfVisibilityDetectorWorkaround = true;
 
                 double? height =
                     await _platform.getLastNativeAdMeasureHeight(params.nativeAdFactory);
